@@ -1,0 +1,366 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-12-11T00:00:00Z",
+  "last_scan": "2025-12-11T00:00:00Z",
+  "scan_directories": [
+    "/Users/vic-gini/ProjectsCode/Agents",
+    "/Users/vic-gini/ProjectsCode/Projects",
+    "/Users/vic-gini/Documents/Victor L Obsidian Vault"
+  ],
+  "agents": [
+    {
+      "name": "agent-architect",
+      "description": "Expert at designing and creating well-structured Claude Code agents following best practices",
+      "tools": ["Read", "Write", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/.claude/agents/agent-architect.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory",
+      "domain": "System",
+      "subdomain": "AgentFactory",
+      "function": "Setup",
+      "launch_syntax": "@agent-architect"
+    },
+    {
+      "name": "agent-directory",
+      "description": "Central directory and launcher for all AI agents, organized by domain and function",
+      "tools": ["Read", "Glob", "Grep", "SlashCommand", "Task"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentDirectory/.claude/agents/agent-directory.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/AgentDirectory",
+      "domain": "System",
+      "subdomain": "AgentDirectory",
+      "function": "Planning",
+      "launch_syntax": "@agent-directory"
+    },
+    {
+      "name": "greeter",
+      "description": "A friendly agent that greets users and answers basic questions",
+      "tools": [],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/examples/simple-agent/.claude/agents/greeter.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/examples/simple-agent",
+      "domain": "System",
+      "subdomain": "General",
+      "function": "Creation",
+      "launch_syntax": "@greeter",
+      "note": "Example agent - conversation only"
+    },
+    {
+      "name": "code-analyzer",
+      "description": "Analyzes codebases to answer questions and find patterns",
+      "tools": ["Read", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/examples/tool-using-agent/.claude/agents/code-analyzer.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/examples/tool-using-agent",
+      "domain": "System",
+      "subdomain": "General",
+      "function": "Analysis",
+      "launch_syntax": "@code-analyzer",
+      "note": "Example agent - read-only tools"
+    },
+    {
+      "name": "expert-panel",
+      "description": "A panel of experts offering multiple perspectives on topics",
+      "tools": ["Read", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/examples/multi-persona-agent/.claude/agents/expert-panel.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory/examples/multi-persona-agent",
+      "domain": "System",
+      "subdomain": "General",
+      "function": "Analysis",
+      "launch_syntax": "@expert-panel",
+      "note": "Example agent - multi-persona"
+    },
+    {
+      "name": "website-copywriter",
+      "description": "Creates high-converting website copy and page structure with iterative section-by-section workflow",
+      "tools": ["WebSearch", "WebFetch", "Read", "Write", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter/.claude/agents/website-copywriter.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter",
+      "domain": "Work",
+      "subdomain": "VerifiedMetrics",
+      "function": "Creation",
+      "launch_syntax": "@website-copywriter"
+    },
+    {
+      "name": "competitor-analyzer",
+      "description": "Analyzes competitor websites to identify messaging strategies, positioning, and opportunities for differentiation",
+      "tools": ["WebFetch", "WebSearch", "Write", "Read", "Glob"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter/.claude/agents/competitor-analyzer.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter",
+      "domain": "Work",
+      "subdomain": "VerifiedMetrics",
+      "function": "Analysis",
+      "launch_syntax": "@competitor-analyzer"
+    },
+    {
+      "name": "seo-researcher",
+      "description": "Researches keywords, analyzes SEO opportunities, and provides keyword recommendations for website copy",
+      "tools": ["WebSearch", "WebFetch", "Read", "Write", "Glob"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter/.claude/agents/seo-researcher.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter",
+      "domain": "Work",
+      "subdomain": "VerifiedMetrics",
+      "function": "Research",
+      "launch_syntax": "@seo-researcher"
+    },
+    {
+      "name": "copy-reviewer",
+      "description": "Reviews website copy against conversion frameworks, best practices, and accessibility standards",
+      "tools": ["Read", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter/.claude/agents/copy-reviewer.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter",
+      "domain": "Work",
+      "subdomain": "VerifiedMetrics",
+      "function": "Review",
+      "launch_syntax": "@copy-reviewer"
+    },
+    {
+      "name": "project-setup",
+      "description": "Creates new website copy project folders with proper structure and templates",
+      "tools": ["Write", "Read", "Glob"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter/.claude/agents/project-setup.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter",
+      "domain": "Work",
+      "subdomain": "VerifiedMetrics",
+      "function": "Setup",
+      "launch_syntax": "@project-setup"
+    },
+    {
+      "name": "planner",
+      "description": "Project Manager and Life Organizer helping with planning, prioritization, and goal alignment across all life domains",
+      "tools": ["Read", "Write", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/Planning/.claude/agents/planner.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/Planning",
+      "domain": "Personal",
+      "subdomain": "OrganizationRoutinesMaintenance",
+      "function": "Planning",
+      "launch_syntax": "@planner"
+    },
+    {
+      "name": "decision-maker",
+      "description": "CBDT decision-making assistant for structured 5-day decision protocol with calibration tracking",
+      "tools": ["Bash", "Read", "Write", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/DecisionMaking/CLAUDE.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/DecisionMaking",
+      "domain": "Personal",
+      "subdomain": "Recovery",
+      "function": "Planning",
+      "launch_syntax": "cd /Users/vic-gini/ProjectsCode/Agents/DecisionMaking && /decide",
+      "commands": ["/decide", "/checkin"]
+    },
+    {
+      "name": "email-digest",
+      "description": "Creates personalized email digests from Gmail with categorized summaries for payments, family updates, healthcare, orders, and attention-required items",
+      "tools": ["mcp__gmail-workspace__search_gmail_messages", "mcp__gmail-workspace__get_gmail_message_content", "mcp__gmail-workspace__get_gmail_messages_content_batch"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/EmailDigest/.claude/agents/email-digest.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/EmailDigest",
+      "domain": "Personal",
+      "subdomain": "OrganizationRoutinesMaintenance",
+      "function": "Analysis",
+      "launch_syntax": "@email-digest",
+      "commands": ["/digest"]
+    },
+    {
+      "name": "email-digest-vm",
+      "description": "Creates personalized email digests from Gmail for Verified Metrics work account with categories for sales, internal team, meetings, billing, events, and unsolicited emails",
+      "tools": ["mcp__gmail-workspace__search_gmail_messages", "mcp__gmail-workspace__get_gmail_message_content", "mcp__gmail-workspace__get_gmail_messages_content_batch"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/EmailDigestVM/.claude/agents/email-digest-vm.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/EmailDigestVM",
+      "domain": "Work",
+      "subdomain": "VerifiedMetrics",
+      "function": "Analysis",
+      "launch_syntax": "@email-digest-vm",
+      "commands": ["/digest-vm"]
+    },
+    {
+      "name": "transcript-cleanup",
+      "description": "Expert transcript editor for cleaning up and enhancing imperfect audio transcriptions from Google Meet, Fireflies.ai, Otter.ai",
+      "tools": ["Read", "Write", "Glob"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AudioTranscriptCleanup/CLAUDE.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/AudioTranscriptCleanup",
+      "domain": "Work",
+      "subdomain": "General",
+      "function": "Creation",
+      "launch_syntax": "@transcript-cleanup"
+    },
+    {
+      "name": "family-office-analytics",
+      "description": "Extract fixed income positions from private bank PDFs, consolidate across custodians, and generate concentration risk analytics",
+      "tools": ["Read", "Write", "Bash", "Glob", "Grep"],
+      "path": "/Users/vic-gini/ProjectsCode/Agents/FamilyOfficeAnalytics/CLAUDE.md",
+      "project_path": "/Users/vic-gini/ProjectsCode/Agents/FamilyOfficeAnalytics",
+      "domain": "Personal",
+      "subdomain": "PersonalFinance",
+      "function": "Analysis",
+      "launch_syntax": "cd /Users/vic-gini/ProjectsCode/Agents/FamilyOfficeAnalytics && python -m src.main",
+      "commands": ["process", "process-all", "enrich-request", "enrich-import", "report", "export"]
+    }
+  ],
+  "discovered_projects": [
+    {
+      "name": "DecisionMaking",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/DecisionMaking",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "CBDT decision-making framework with 5-day protocol"
+    },
+    {
+      "name": "AgentFactory",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentFactory",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "Agent creation and management system"
+    },
+    {
+      "name": "AgentDirectory",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentDirectory",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "Central directory and launcher for all AI agents"
+    },
+    {
+      "name": "WebsiteCopywriter",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/WebsiteCopywriter",
+      "claude_md": true,
+      "agent_count": 5,
+      "description": "Website copywriting system with specialized agents"
+    },
+    {
+      "name": "Planning",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/Planning",
+      "claude_md": true,
+      "agent_count": 2,
+      "description": "Project management and life organization system"
+    },
+    {
+      "name": "AgentLogs",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AgentLogs",
+      "claude_md": true,
+      "agent_count": 0,
+      "description": "Session logging system"
+    },
+    {
+      "name": "Victor L Obsidian Vault",
+      "path": "/Users/vic-gini/Documents/Victor L Obsidian Vault",
+      "claude_md": true,
+      "agent_count": 0,
+      "description": "Personal knowledge base (agents symlinked from Planning)"
+    },
+    {
+      "name": "EmailDigest",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/EmailDigest",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "Gmail email digest generator with categorized summaries for personal account"
+    },
+    {
+      "name": "EmailDigestVM",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/EmailDigestVM",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "Gmail email digest generator for Verified Metrics work account"
+    },
+    {
+      "name": "AudioTranscriptCleanup",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/AudioTranscriptCleanup",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "Transcript cleanup and enhancement for audio recordings"
+    },
+    {
+      "name": "FamilyOfficeAnalytics",
+      "path": "/Users/vic-gini/ProjectsCode/Agents/FamilyOfficeAnalytics",
+      "claude_md": true,
+      "agent_count": 1,
+      "description": "Fixed income portfolio analytics from private bank PDFs"
+    }
+  ],
+  "domains": {
+    "Work": {
+      "VerifiedMetrics": [
+        "website-copywriter",
+        "competitor-analyzer",
+        "seo-researcher",
+        "copy-reviewer",
+        "project-setup",
+        "email-digest-vm"
+      ],
+      "ArgonautExpeditions": [],
+      "IDEACIMUN": [],
+      "CloudviewRealEstate": [],
+      "General": [
+        "transcript-cleanup"
+      ]
+    },
+    "Personal": {
+      "Family": [],
+      "PersonalFinance": [
+        "family-office-analytics"
+      ],
+      "Recovery": [
+        "decision-maker"
+      ],
+      "LifeAndFun": [],
+      "OrganizationRoutinesMaintenance": [
+        "planner",
+        "email-digest"
+      ]
+    },
+    "System": {
+      "AgentFactory": [
+        "agent-architect"
+      ],
+      "AgentDirectory": [
+        "agent-directory"
+      ],
+      "General": [
+        "greeter",
+        "code-analyzer",
+        "expert-panel"
+      ]
+    }
+  },
+  "functions": {
+    "Analysis": [
+      "code-analyzer",
+      "expert-panel",
+      "competitor-analyzer",
+      "email-digest",
+      "email-digest-vm",
+      "family-office-analytics"
+    ],
+    "Creation": [
+      "greeter",
+      "website-copywriter",
+      "transcript-cleanup"
+    ],
+    "Planning": [
+      "agent-directory",
+      "planner",
+      "decision-maker"
+    ],
+    "Research": [
+      "seo-researcher"
+    ],
+    "Review": [
+      "copy-reviewer"
+    ],
+    "Setup": [
+      "agent-architect",
+      "project-setup"
+    ]
+  },
+  "stats": {
+    "total_agents": 16,
+    "total_projects": 11,
+    "agents_by_domain": {
+      "Work": 7,
+      "Personal": 4,
+      "System": 5
+    },
+    "agents_by_function": {
+      "Analysis": 6,
+      "Creation": 3,
+      "Planning": 3,
+      "Research": 1,
+      "Review": 1,
+      "Setup": 2
+    }
+  }
+}

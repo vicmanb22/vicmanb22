@@ -1,0 +1,54 @@
+{
+  "accounts": [
+    {
+      "email": "victor.lang22@gmail.com",
+      "type": "personal",
+      "label": "Personal Gmail",
+      "services": [
+        "gmail",
+        "calendar"
+      ],
+      "added": "2025-12-20"
+    },
+    {
+      "email": "victor@verifiedmetrics.com",
+      "type": "work",
+      "label": "Verified Metrics",
+      "services": [
+        "gmail",
+        "calendar"
+      ],
+      "added": "2025-12-20"
+    },
+    {
+      "email": "vlang@cloudviewre.com",
+      "type": "work",
+      "label": "Cloudview Real Estate",
+      "services": [
+        "gmail",
+        "calendar"
+      ],
+      "added": "2025-12-20"
+    },
+    {
+      "email": "victor@argonautexpeditions.com",
+      "type": "work",
+      "label": "Argonaut Expeditions",
+      "services": [
+        "gmail",
+        "calendar"
+      ],
+      "added": "2025-12-20"
+    },
+    {
+      "email": "victor.lang@modelun.net",
+      "type": "work",
+      "label": "Model UN",
+      "services": [
+        "gmail",
+        "calendar"
+      ],
+      "added": "2025-12-20"
+    }
+  ]
+}

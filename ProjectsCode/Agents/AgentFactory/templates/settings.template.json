@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read([specific-path]/**)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  }
+}

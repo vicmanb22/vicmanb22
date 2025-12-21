@@ -1,0 +1,52 @@
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Database (CSV files contain sensitive portfolio data)
+data/banks.csv
+data/securities.csv
+data/positions.csv
+data/imports.csv
+# Keep fx_rates.csv as it's non-sensitive reference data
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Output files (generated reports)
+output/*.xlsx
+output/*.csv
+
+# Input PDFs (may contain sensitive data)
+input/*.pdf
+input/*.PDF
+
+# OS
+.DS_Store
+Thumbs.db

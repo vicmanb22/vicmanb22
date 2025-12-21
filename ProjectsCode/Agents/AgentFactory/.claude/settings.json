@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/vic-gini/ProjectsCode/**)",
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/**)",
+      "Write(/Users/vic-gini/ProjectsCode/**)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  }
+}

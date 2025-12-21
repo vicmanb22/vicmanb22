@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/vic-gini/ProjectsCode/**)",
+      "Write(/Users/vic-gini/ProjectsCode/Agents/AgentLogs/**)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  }
+}

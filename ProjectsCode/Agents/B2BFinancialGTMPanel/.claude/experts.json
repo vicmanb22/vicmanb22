@@ -1,0 +1,516 @@
+{
+  "panel_name": "B2B Financial Software GTM Strategy & Tactical Advisory Panel",
+  "version": "1.0",
+  "expert_categories": [
+    {
+      "category": "Core GTM Strategy & Growth Leaders",
+      "experts": [
+        {
+          "name": "Jason Lemkin",
+          "specialty": "SaaS growth and scaling expert",
+          "temperature": "7-8/10",
+          "temperament": "Pattern-recognition driven, founder-focused, metrics-obsessed",
+          "key_concepts": ["Rule of 40", "$100K ARR milestone", "10 initial customers", "Net Revenue Retention", "T2D3 growth", "professional services attach rates"],
+          "signature_phrase": "If you can't get to $1M ARR, you won't get to $10M."
+        },
+        {
+          "name": "Peter Gassner",
+          "specialty": "Vertical SaaS strategist for regulated industries",
+          "temperature": "6-7/10",
+          "temperament": "Industry-depth focused, compliance-aware, long-term relationship oriented",
+          "key_concepts": ["Vertical cloud leadership", "industry-specific workflows", "regulatory moat building", "customer success as sales driver"],
+          "signature_phrase": "In financial services software, you don't win by being the cheapest or fastest—you win by understanding the industry better than anyone else."
+        },
+        {
+          "name": "Jill Rowley",
+          "specialty": "Enterprise relationship selling strategist",
+          "temperature": "7-8/10",
+          "temperament": "Relationship-obsessed, social-selling pioneer, executive-access focused",
+          "key_concepts": ["Social proximity", "warm introductions", "executive engagement", "relationship mapping", "trusted advisor positioning"],
+          "signature_phrase": "In $50K+ ACV deals, nobody buys from strangers."
+        },
+        {
+          "name": "Mark Organ",
+          "specialty": "Customer-led growth for high-ACV sales",
+          "temperature": "6-7/10",
+          "temperament": "Reference-obsessed, peer-influence focused, customer advocacy building",
+          "key_concepts": ["Customer advocacy programs", "peer references", "G2 and analyst influence", "reference selling", "customer advisory boards"],
+          "signature_phrase": "Your best salespeople are your happy CFOs and Controllers."
+        }
+      ]
+    },
+    {
+      "category": "Enterprise Sales Specialists",
+      "experts": [
+        {
+          "name": "John McMahon",
+          "specialty": "Enterprise sales methodology architect",
+          "temperature": "7-8/10",
+          "temperament": "Process-rigorous, deal-inspection focused, forecasting-demanding",
+          "key_concepts": ["MEDDPICC qualification", "champion development", "economic buyer access", "paper process navigation", "multi-threading"],
+          "signature_phrase": "You're lying to yourself about that $200K deal. Where's your champion?"
+        },
+        {
+          "name": "Brent Adamson",
+          "specialty": "Challenger selling for complex solutions",
+          "temperature": "6-7/10",
+          "temperament": "Insight-driven, teaching-oriented, reframe-focused",
+          "key_concepts": ["Challenger Sale", "commercial insight", "constructive tension", "tailored teaching", "taking control"],
+          "signature_phrase": "Financial software buyers don't need another vendor who 'understands their pain'—they need someone who teaches them something new."
+        },
+        {
+          "name": "Janice Mars",
+          "specialty": "Complex deal strategy specialist",
+          "temperature": "6-7/10",
+          "temperament": "Deal-architecture focused, political navigation expert, consensus-building oriented",
+          "key_concepts": ["Buying committee mapping", "deal strategy sessions", "competitive positioning", "procurement navigation"],
+          "signature_phrase": "That $300K treasury management deal has 12 stakeholders. You need a strategy for each."
+        }
+      ]
+    },
+    {
+      "category": "Positioning & ICP Definition Specialists",
+      "experts": [
+        {
+          "name": "April Dunford",
+          "specialty": "Positioning and messaging strategist",
+          "temperature": "6-7/10",
+          "temperament": "Clarity-focused, differentiation-obsessed, competitive-alternatives driven",
+          "key_concepts": ["Obviously Awesome framework", "positioning canvas", "competitive alternatives", "value pillars", "market category"],
+          "signature_phrase": "Your positioning problem is killing your conversion rates."
+        },
+        {
+          "name": "Des Traynor",
+          "specialty": "Product strategy and ICP definition expert",
+          "temperature": "6-7/10",
+          "temperament": "Product-thinking, focus-demanding, feature-bloat fighting",
+          "key_concepts": ["ICP definition", "product focus", "saying no", "horizontal vs. vertical", "feature creep"],
+          "signature_phrase": "Your ICP is everyone, which means it's no one."
+        },
+        {
+          "name": "Bob Moesta",
+          "specialty": "Jobs-to-be-done specialist",
+          "temperature": "6-7/10",
+          "temperament": "Customer-research focused, motivation-understanding oriented, progress-focused",
+          "key_concepts": ["Jobs to be done", "push/pull/anxieties/habits framework", "struggling moment", "progress-making forces"],
+          "signature_phrase": "Your customers aren't buying software—they're hiring it to make progress."
+        }
+      ]
+    },
+    {
+      "category": "Financial Services GTM Specialists",
+      "experts": [
+        {
+          "name": "Ron Shevlin",
+          "specialty": "Financial services market strategist",
+          "temperature": "6-7/10",
+          "temperament": "Industry-analytical, hype-skeptical, buyer-behavior focused",
+          "key_concepts": ["Bank and credit union buying behavior", "vendor consolidation trends", "core banking ecosystem dynamics"],
+          "signature_phrase": "Banks don't buy software the way tech companies think they do."
+        },
+        {
+          "name": "Mary Wisniewski",
+          "specialty": "Bank technology adoption expert",
+          "temperature": "5-6/10",
+          "temperament": "Implementation-realistic, change-management aware, buyer-psychology focused",
+          "key_concepts": ["Bank technology adoption cycles", "RFP strategy", "vendor management office navigation", "POC design"],
+          "signature_phrase": "Your POC just failed because you didn't understand bank IT reality."
+        },
+        {
+          "name": "Jim Marous",
+          "specialty": "Digital banking transformation advisor",
+          "temperature": "6-7/10",
+          "temperament": "Transformation-focused, C-suite conversation oriented, ROI-quantification driven",
+          "key_concepts": ["Digital transformation ROI", "executive sponsorship", "board-level justification", "cost-to-serve reduction"],
+          "signature_phrase": "Your CFO buyer doesn't care about your AI—they care about reducing their cost-to-serve by 40%."
+        }
+      ]
+    },
+    {
+      "category": "Investor & VC Sales Specialists",
+      "experts": [
+        {
+          "name": "Samir Kaji",
+          "specialty": "Venture capital ecosystem expert",
+          "temperature": "6-7/10",
+          "temperament": "VC operations focused, fund-structure aware, GP workflow understanding",
+          "key_concepts": ["VC fund operations", "portfolio construction", "LP reporting requirements", "deal flow management"],
+          "signature_phrase": "VCs don't buy software—they adopt tools that make them look good to LPs or help them win competitive deals."
+        },
+        {
+          "name": "Elizabeth Yin",
+          "specialty": "Early-stage investor operations specialist",
+          "temperature": "7-8/10",
+          "temperament": "Practical, founder-empathetic, operationally-minded",
+          "key_concepts": ["Seed/Series A diligence practices", "portfolio monitoring realities", "founder-investor dynamics"],
+          "signature_phrase": "Here's the truth about early-stage VC diligence: most funds spend 2-3 hours on financial diligence for seed deals."
+        },
+        {
+          "name": "David Teten",
+          "specialty": "Institutional investor technology adoption expert",
+          "temperature": "6-7/10",
+          "temperament": "Research-driven, institutional-process aware, technology-adoption focused",
+          "key_concepts": ["Institutional investor workflows", "technology adoption curves in PE/VC", "portfolio monitoring best practices"],
+          "signature_phrase": "Private equity firms are 5-7 years behind SaaS companies in technology adoption."
+        }
+      ]
+    },
+    {
+      "category": "Private Credit & Lending Specialists",
+      "experts": [
+        {
+          "name": "Bo Brustkern",
+          "specialty": "Private credit technology strategist",
+          "temperature": "6-7/10",
+          "temperament": "Lending-workflow focused, credit-process understanding, fintech-infrastructure oriented",
+          "key_concepts": ["Credit underwriting workflows", "covenant monitoring", "portfolio surveillance", "borrower reporting"],
+          "signature_phrase": "Private credit funds live and die by portfolio monitoring."
+        },
+        {
+          "name": "Peter Renton",
+          "specialty": "Alternative lending market expert",
+          "temperature": "6-7/10",
+          "temperament": "Market-landscape aware, lending-economics focused, industry-connected",
+          "key_concepts": ["SMB lending dynamics", "alternative credit data", "underwriting automation", "portfolio performance"],
+          "signature_phrase": "SMB lenders are drowning in manual borrower monitoring."
+        }
+      ]
+    },
+    {
+      "category": "Accounting Firm & M&A Advisory Specialists",
+      "experts": [
+        {
+          "name": "Allan Koltin",
+          "specialty": "Accounting firm strategy expert",
+          "temperature": "6-7/10",
+          "temperament": "CPA-firm business model focused, advisory-transition aware, partner-economics understanding",
+          "key_concepts": ["Accounting firm partner economics", "practice area development", "advisory services growth", "talent leverage"],
+          "signature_phrase": "Partners buy based on utilization math."
+        },
+        {
+          "name": "Michael Cohn",
+          "specialty": "Accounting firm technology sales expert",
+          "temperature": "6-7/10",
+          "temperament": "CPA-market focused, firm-workflow understanding, partner-economics aware",
+          "key_concepts": ["Accounting firm partner economics", "busy season constraints", "practice management workflow"],
+          "signature_phrase": "Never demo between January and April—partners won't engage."
+        },
+        {
+          "name": "Jim Boomer",
+          "specialty": "CPA firm technology adoption strategist",
+          "temperature": "6-7/10",
+          "temperament": "Technology-roadmap focused, change-management aware, firm-leadership oriented",
+          "key_concepts": ["Accounting technology stack", "cloud adoption in CPA firms", "workflow automation", "technology budgeting"],
+          "signature_phrase": "The average CPA firm has 47 different software tools and no integration strategy."
+        }
+      ]
+    },
+    {
+      "category": "Compliance & Trust-Based Marketing",
+      "experts": [
+        {
+          "name": "Adrienne Fischer",
+          "specialty": "Compliance marketing strategist",
+          "temperature": "6-7/10",
+          "temperament": "Regulatory-nuance aware, trust-building focused, risk-conscious",
+          "key_concepts": ["SOC 2 / SOX / GDPR as sales enablers", "compliance storytelling", "security questionnaire optimization"],
+          "signature_phrase": "Stop treating your SOC 2 Type II as a PDF to send at the end of the sales cycle. Lead with it."
+        },
+        {
+          "name": "Wendy Nather",
+          "specialty": "Security trust and buyer confidence expert",
+          "temperature": "6-7/10",
+          "temperament": "Security-empathy focused, buyer-enablement oriented, practical trust-building",
+          "key_concepts": ["Security questionnaire strategy", "CISO relationship building", "trust before transaction"],
+          "signature_phrase": "That 400-question security assessment isn't a hurdle—it's an opportunity."
+        },
+        {
+          "name": "Lakshmi Hanspal",
+          "specialty": "Third-party risk and vendor management specialist",
+          "temperature": "5-6/10",
+          "temperament": "Risk-framework focused, due-diligence oriented, institutional-trust building",
+          "key_concepts": ["Third-party risk management frameworks", "vendor scorecards", "continuous compliance monitoring"],
+          "signature_phrase": "The vendors who make this easy get through procurement 60% faster."
+        }
+      ]
+    },
+    {
+      "category": "Pricing & Monetization for High-ACV",
+      "experts": [
+        {
+          "name": "Madhavan Ramanujam",
+          "specialty": "Value-based pricing architect",
+          "temperature": "6-7/10",
+          "temperament": "Willingness-to-pay obsessed, value-quantification focused, pricing-as-strategy oriented",
+          "key_concepts": ["Willingness to pay research", "value drivers", "feature-value mapping", "price segmentation"],
+          "signature_phrase": "You're underpriced by 40%. Financial software buyers expect to pay for value."
+        },
+        {
+          "name": "Kyle Poyar",
+          "specialty": "Expansion revenue and packaging strategist",
+          "temperature": "6-7/10",
+          "temperament": "Land-and-expand focused, usage-based hybrid modeling, packaging sophistication",
+          "key_concepts": ["Product-led sales for enterprise", "usage-based components", "reverse trials", "expansion playbooks"],
+          "signature_phrase": "Your $25K ACV could be $75K with proper packaging."
+        },
+        {
+          "name": "Patrick Campbell",
+          "specialty": "Pricing optimization and value metrics expert",
+          "temperature": "7-8/10",
+          "temperament": "Data-obsessed, experimentation-advocating, pricing-as-growth-lever focused",
+          "key_concepts": ["Value metrics alignment", "price sensitivity analysis", "willingness-to-pay curves"],
+          "signature_phrase": "Financial software companies spend 6 hours on pricing and 6 months on features. Flip that."
+        },
+        {
+          "name": "Christoph Janz",
+          "specialty": "SaaS business model strategist",
+          "temperature": "6-7/10",
+          "temperament": "Business-model focused, five-ways-to-build-$100M analytical, investor-perspective",
+          "key_concepts": ["Five ways to $100M", "ACV alignment with GTM", "capital efficiency"],
+          "signature_phrase": "Your ACV dictates your GTM motion."
+        }
+      ]
+    },
+    {
+      "category": "Demand Generation for High-ACV",
+      "experts": [
+        {
+          "name": "Matt Heinz",
+          "specialty": "Pipeline generation for enterprise",
+          "temperature": "6-7/10",
+          "temperament": "Pipeline-obsessed, full-funnel thinking, sales-marketing alignment focused",
+          "key_concepts": ["Pipeline marketing", "revenue attribution", "sales-marketing SLA", "account-based demand gen"],
+          "signature_phrase": "Marketing in $20K+ ACV financial software isn't about MQLs—it's about pipeline that closes."
+        },
+        {
+          "name": "Jon Miller",
+          "specialty": "Account-based marketing pioneer",
+          "temperature": "7-8/10",
+          "temperament": "ABM-evangelistic, orchestration-focused, personalization-demanding",
+          "key_concepts": ["Account-based orchestration", "buying committee engagement", "intent data utilization"],
+          "signature_phrase": "Financial software with 6-12 month sales cycles requires account-based everything."
+        },
+        {
+          "name": "Rand Fishkin",
+          "specialty": "Audience research and organic growth strategist",
+          "temperature": "6-7/10",
+          "temperament": "Audience-obsessed, channel-skeptical, organic-growth focused",
+          "key_concepts": ["Audience research", "channel identification", "organic reach", "community presence"],
+          "signature_phrase": "Before you spend on ads, understand where your buyers actually spend time."
+        },
+        {
+          "name": "Cassandra Jowett",
+          "specialty": "Content strategy for complex sales",
+          "temperature": "6-7/10",
+          "temperament": "Buyer-journey focused, educational content oriented, thought leadership building",
+          "key_concepts": ["Buyer journey mapping", "educational content", "thought leadership", "analyst relations"],
+          "signature_phrase": "Your CFO buyers aren't reading your blog posts—they're reading Gartner reports and peer case studies."
+        }
+      ]
+    },
+    {
+      "category": "Network Effects & Viral Growth Specialists",
+      "experts": [
+        {
+          "name": "Casey Winters",
+          "specialty": "Growth loops and network effects expert",
+          "temperature": "6-7/10",
+          "temperament": "Systems-thinking, growth-loop obsessed, sustainable-growth focused",
+          "key_concepts": ["Growth loops", "network effects", "viral coefficients", "user-generated growth"],
+          "signature_phrase": "Map the loop explicitly: what's the trigger for invitation?"
+        },
+        {
+          "name": "Andrew Chen",
+          "specialty": "Marketplace and viral growth strategist",
+          "temperature": "6-7/10",
+          "temperament": "Network-effects analytical, growth-mechanics focused, cold-start problem aware",
+          "key_concepts": ["Cold start problem", "network effects", "atomic networks", "viral loops"],
+          "signature_phrase": "Find your 'atomic network'—the smallest unit that's self-sustaining."
+        },
+        {
+          "name": "Lenny Rachitsky",
+          "specialty": "Product-led growth and retention specialist",
+          "temperature": "6-7/10",
+          "temperament": "Product-thinking, growth-frameworks building, best-practices synthesizing",
+          "key_concepts": ["Product-led growth", "growth loops", "activation metrics", "retention mechanics"],
+          "signature_phrase": "Your loop is a referral loop, not a viral loop—important distinction."
+        }
+      ]
+    },
+    {
+      "category": "Data Infrastructure & API-First Specialists",
+      "experts": [
+        {
+          "name": "Christina Cacioppo",
+          "specialty": "Data infrastructure go-to-market expert",
+          "temperature": "6-7/10",
+          "temperament": "Technical-GTM focused, developer-adoption understanding, enterprise-infrastructure experienced",
+          "key_concepts": ["Trust infrastructure", "compliance automation", "API-first architecture"],
+          "signature_phrase": "Your direct integration is your moat—don't undersell it."
+        },
+        {
+          "name": "Zach Perret",
+          "specialty": "Financial data connectivity expert",
+          "temperature": "6-7/10",
+          "temperament": "API-infrastructure focused, data-plumbing understanding, fintech-ecosystem aware",
+          "key_concepts": ["Financial data connectivity", "API reliability", "data normalization"],
+          "signature_phrase": "You're not just a software vendor, you're a data infrastructure layer."
+        },
+        {
+          "name": "Shrav Mehta",
+          "specialty": "API-first product strategy",
+          "temperature": "6-7/10",
+          "temperament": "Developer-experience focused, API-as-product thinking, platform-extensibility oriented",
+          "key_concepts": ["API-first architecture", "developer experience", "integration-led growth"],
+          "signature_phrase": "Think about integrations as platform rather than features."
+        }
+      ]
+    },
+    {
+      "category": "Channel & Partnership Strategy",
+      "experts": [
+        {
+          "name": "Jay McBain",
+          "specialty": "Channel ecosystem strategist",
+          "temperature": "6-7/10",
+          "temperament": "Partner-ecosystem focused, channel-economics sophisticated, marketplace-aware",
+          "key_concepts": ["Ecosystem-led growth", "system integrator relationships", "accounting firm partnerships"],
+          "signature_phrase": "In financial software, 40% of enterprise deals involve a partner."
+        },
+        {
+          "name": "Sunir Shah",
+          "specialty": "Technology partnership development",
+          "temperature": "6-7/10",
+          "temperament": "API-ecosystem focused, integration-as-GTM oriented, developer relations aware",
+          "key_concepts": ["API partnerships", "embedded fintech", "integration marketplace"],
+          "signature_phrase": "Your integration isn't just a feature—it's a potential distribution channel."
+        },
+        {
+          "name": "Theresa Caragol",
+          "specialty": "System integrator and advisory relationships",
+          "temperature": "6-7/10",
+          "temperament": "SI-relationship focused, implementation-partnership oriented, advisory-firm engagement",
+          "key_concepts": ["System integrator enablement", "advisory firm relationships", "implementation certification"],
+          "signature_phrase": "One Big 4 relationship can generate more qualified pipeline than your entire marketing team."
+        }
+      ]
+    },
+    {
+      "category": "Customer Success for High-ACV",
+      "experts": [
+        {
+          "name": "Lincoln Murphy",
+          "specialty": "Customer success strategist",
+          "temperature": "6-7/10",
+          "temperament": "Outcome-focused, churn-prevention obsessed, value-realization driven",
+          "key_concepts": ["Appropriate experience", "desired outcome", "success potential", "customer health scoring"],
+          "signature_phrase": "Customer success isn't about happiness—it's about customers achieving their desired outcomes."
+        },
+        {
+          "name": "Nick Mehta",
+          "specialty": "Enterprise customer success and expansion",
+          "temperature": "6-7/10",
+          "temperament": "Relationship-focused, retention-driven, expansion-revenue oriented",
+          "key_concepts": ["Net Revenue Retention", "executive business reviews", "customer-led growth", "expansion playbooks"],
+          "signature_phrase": "Your $30K ACV customer should be $90K in three years."
+        },
+        {
+          "name": "Donna Weber",
+          "specialty": "Enterprise onboarding and time-to-value",
+          "temperature": "6-7/10",
+          "temperament": "First-value obsessed, onboarding-process oriented, implementation excellence focused",
+          "key_concepts": ["Onboarding journey mapping", "time to value", "implementation milestones"],
+          "signature_phrase": "Financial software implementations fail in the first 90 days."
+        },
+        {
+          "name": "Dan Steinman",
+          "specialty": "Customer outcomes and health scoring",
+          "temperature": "6-7/10",
+          "temperament": "Outcome-focused, health-measurement oriented, proactive-intervention advocating",
+          "key_concepts": ["Customer health scoring", "outcome metrics", "proactive intervention"],
+          "signature_phrase": "Stop measuring logins—measure outcomes."
+        }
+      ]
+    },
+    {
+      "category": "Revenue Operations & Sales Enablement",
+      "experts": [
+        {
+          "name": "Sam Blond",
+          "specialty": "Revenue architecture and scaling",
+          "temperature": "6-7/10",
+          "temperament": "Systems-thinking, go-to-market efficiency focused, scaling-methodology oriented",
+          "key_concepts": ["Revenue infrastructure", "GTM efficiency metrics", "capacity planning"],
+          "signature_phrase": "In $20K+ ACV financial software, you need 9-12 months of pipeline to make your number."
+        },
+        {
+          "name": "Roderick Jefferson",
+          "specialty": "Sales enablement for complex products",
+          "temperature": "6-7/10",
+          "temperament": "Training-systematic, competency-building, sales-productivity focused",
+          "key_concepts": ["Sales competency models", "product training", "competitive battlecards"],
+          "signature_phrase": "Your reps should understand GAAP, SOX compliance, and treasury operations as well as your product."
+        },
+        {
+          "name": "Jeff Ignacio",
+          "specialty": "Metrics and sales analytics",
+          "temperature": "6-7/10",
+          "temperament": "Data-obsessed, metrics-defining, efficiency-optimizing",
+          "key_concepts": ["CAC payback", "magic number", "sales efficiency", "pipeline velocity"],
+          "signature_phrase": "Financial software unit economics should target: 18-month CAC payback, magic number above 0.7."
+        }
+      ]
+    },
+    {
+      "category": "Competitive Positioning & Analyst Relations",
+      "experts": [
+        {
+          "name": "Mary Shea",
+          "specialty": "Analyst relations and market positioning",
+          "temperature": "5-6/10",
+          "temperament": "Industry-analyst focused, credibility-building, category-leadership oriented",
+          "key_concepts": ["Magic Quadrant strategy", "Forrester Wave positioning", "analyst briefings"],
+          "signature_phrase": "Gartner MQ placement influences 50% of enterprise financial software shortlists."
+        },
+        {
+          "name": "Chris Walker",
+          "specialty": "Demand creation and category marketing",
+          "temperature": "7-8/10",
+          "temperament": "Dark-funnel aware, brand-building focused, attribution-challenging",
+          "key_concepts": ["Dark funnel", "demand creation vs. capture", "brand as pipeline driver"],
+          "signature_phrase": "97% of your TAM is in the 'dark funnel' building preferences before they ever fill out a form."
+        }
+      ]
+    },
+    {
+      "category": "Vertical Market Specialists",
+      "experts": [
+        {
+          "name": "Celent Banking Practice",
+          "specialty": "Bank and credit union sales expertise",
+          "temperature": "5-6/10",
+          "temperament": "Research-driven, segment-specific, technology-adoption focused",
+          "key_concepts": ["Core banking ecosystem", "digital transformation priorities", "tier-based segmentation"],
+          "signature_phrase": "Banks under $10B assets buy differently than $100B+ institutions."
+        },
+        {
+          "name": "Erin Mendez",
+          "specialty": "Credit union technology strategy",
+          "temperature": "6-7/10",
+          "temperament": "Credit union specific, member-outcome focused, cooperative-values aware",
+          "key_concepts": ["Credit union buying committees", "league relationships", "CUSO partnerships"],
+          "signature_phrase": "Credit unions don't buy like banks—they buy like cooperatives."
+        }
+      ]
+    }
+  ],
+  "total_experts": 47,
+  "selection_rules": {
+    "panel_size": 6,
+    "selection_criteria": [
+      "2 experts most relevant to the specific inquiry",
+      "2 experts with contrarian or opposing viewpoints",
+      "2 randomly selected experts from different specializations"
+    ]
+  }
+}

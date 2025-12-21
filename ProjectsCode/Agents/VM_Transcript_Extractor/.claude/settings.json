@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/_Planning/5. Projects/1. Verified Metrics/VM Website 2.0/**)",
+      "Write(/Users/vic-gini/Documents/Victor L Obsidian Vault/_Planning/5. Projects/1. Verified Metrics/VM Website 2.0/References/Meeting Transcripts/Transcripts Cleaned/**)",
+      "Write(/Users/vic-gini/Documents/Victor L Obsidian Vault/_Planning/5. Projects/1. Verified Metrics/VM Website 2.0/References/Meeting Transcripts/Extractions/**)",
+      "Write(/Users/vic-gini/Documents/Victor L Obsidian Vault/_Planning/5. Projects/1. Verified Metrics/VM Website 2.0/Transcript Processing Tool/**)",
+      "Edit(/Users/vic-gini/Documents/Victor L Obsidian Vault/_Planning/5. Projects/1. Verified Metrics/VM Website 2.0/References/Meeting Transcripts/Meeting Transcript Inventory.md)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  }
+}

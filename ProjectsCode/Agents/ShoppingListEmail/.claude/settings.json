@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/Shopping list.md)",
+      "Edit(/Users/vic-gini/Documents/Victor L Obsidian Vault/Shopping list.md)",
+      "mcp__gmail-workspace__send_gmail_message",
+      "mcp__gmail-workspace__search_gmail_messages",
+      "mcp__gmail-workspace__get_gmail_message_content",
+      "mcp__gmail-workspace__get_gmail_thread_content"
+    ],
+    "deny": [
+      "mcp__gmail-workspace__draft_gmail_message",
+      "mcp__gmail-workspace__modify_gmail_message_labels",
+      "mcp__gmail-workspace__manage_gmail_label"
+    ]
+  }
+}

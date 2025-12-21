@@ -1,0 +1,25 @@
+# Product Help Page Reviews
+
+Project for reviewing and improving product help pages.
+
+## Maintaining Changelog & Plan
+
+This project uses `CHANGELOG.md` and `PLAN.md` for tracking.
+
+**⚠️ IMPORTANT: Always update CHANGELOG.md immediately and automatically after making ANY changes to project files — including templates, prompts, configuration files, system files, or any other project assets. Do NOT wait for the user to ask. This must happen automatically after every change.**
+
+### When working on this project:
+1. Check PLAN.md at the start to see current priorities
+2. **Update CHANGELOG.md immediately after completing any changes** (under `## [Unreleased]`)
+3. Move completed items from Current Focus to Completed in PLAN.md
+
+### Changelog categories:
+Added, Changed, Deprecated, Removed, Fixed, Security
+
+### Entry format:
+`- (YYYY-MM-DD HH:MM) Description of change`
+
+### Plan sections:
+- **Current Focus** - Active work (1-3 items max)
+- **Backlog** - Future ideas
+- **Completed** - Done items

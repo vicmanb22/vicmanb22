@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FP&A - Financial Planning & Analysis | Terminal</title>
+    
+    <!-- Google Fonts - Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== TERMINAL DESIGN SYSTEM ===== */
+        :root {
+            /* Colors - Terminal Blue */
+            --terminal-blue-900: #102A36;
+            --terminal-blue-700: #173F52;
+            --terminal-blue-500: #326882;
+            --terminal-blue-300: #6F9FB6;
+            --terminal-blue-200: #B1C8D2;
+            --terminal-blue-100: #DEE9EF;
+            
+            /* Colors - Terminal Lemon */
+            --terminal-lemon-700: #DED852;
+            --terminal-lemon-500: #EFEA68;
+            --terminal-lemon-300: #F1EE97;
+            
+            /* Typography */
+            --font-family: 'Plus Jakarta Sans', sans-serif;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+        }
+        
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            color: var(--terminal-blue-900);
+            line-height: 1.6;
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--terminal-blue-900) 0%, var(--terminal-blue-700) 100%);
+            color: white;
+            padding: var(--space-3xl) 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        /* ===== SECTION HEADERS ===== */
+        .section {
+            padding: var(--space-3xl) 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .section-number {
+            display: inline-block;
+            background: var(--terminal-lemon-700);
+            color: var(--terminal-blue-700);
+            padding: var(--space-xs) var(--space-md);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--terminal-blue-700);
+            margin-bottom: var(--space-sm);
+            letter-spacing: -0.01em;
+        }
+        
+        .section-tagline {
+            font-size: 20px;
+            color: var(--terminal-blue-500);
+            font-weight: 500;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* ===== ACCORDION ===== */
+        .accordion {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .accordion-item {
+            background: white;
+            border: 2px solid var(--terminal-blue-200);
+            margin-bottom: var(--space-md);
+            transition: all 0.2s ease-out;
+        }
+        
+        .accordion-item:hover {
+            border-color: var(--terminal-blue-500);
+        }
+        
+        .accordion-item.active {
+            border-color: var(--terminal-blue-700);
+            box-shadow: 0 4px 12px rgba(23, 63, 82, 0.1);
+        }
+        
+        .accordion-header {
+            padding: var(--space-lg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--space-md);
+            transition: background-color 0.2s ease-out;
+        }
+        
+        .accordion-header:hover {
+            background: var(--terminal-blue-100);
+        }
+        
+        .accordion-item.active .accordion-header {
+            background: var(--terminal-blue-100);
+        }
+        
+        .accordion-question {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--terminal-blue-700);
+            flex: 1;
+            line-height: 1.4;
+        }
+        
+        .accordion-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--terminal-blue-700);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-content-inner {
+            padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+        }
+        
+        .accordion-answer {
+            font-size: 16px;
+            color: var(--terminal-blue-900);
+            line-height: 1.6;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .features-list {
+            background: var(--terminal-blue-100);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .features-list h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--terminal-blue-700);
+            margin-bottom: var(--space-md);
+        }
+        
+        .features-list ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .features-list li {
+            font-size: 14px;
+            color: var(--terminal-blue-900);
+            padding: var(--space-sm) 0;
+            padding-left: var(--space-lg);
+            position: relative;
+        }
+        
+        .features-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--terminal-lemon-700);
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .demo-insight {
+            background: linear-gradient(135deg, var(--terminal-blue-700) 0%, var(--terminal-blue-900) 100%);
+            color: white;
+            padding: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+        
+        .demo-insight-label {
+            display: inline-block;
+            background: var(--terminal-lemon-700);
+            color: var(--terminal-blue-700);
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .demo-insight p {
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+        
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--terminal-blue-900) 0%, var(--terminal-blue-700) 100%);
+            color: white;
+            padding: var(--space-3xl) 0;
+        }
+        
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .cta-question {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+        
+        .cta-answer {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: var(--space-xl);
+            opacity: 0.95;
+        }
+        
+        .cta-steps {
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            text-align: left;
+        }
+        
+        .cta-steps h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            text-align: center;
+        }
+        
+        .cta-step {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        .cta-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--terminal-lemon-700);
+            color: var(--terminal-blue-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .step-content h5 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .step-content p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: var(--space-md) var(--space-xl);
+            font-size: 16px;
+            font-weight: 600;
+            font-family: var(--font-family);
+            cursor: pointer;
+            transition: all 0.15s ease-out;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--terminal-lemon-700);
+            color: var(--terminal-blue-700);
+        }
+        
+        .btn-primary:hover {
+            background: var(--terminal-lemon-500);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* ===== SECTION DIVIDER ===== */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--terminal-blue-200), transparent);
+            margin: var(--space-2xl) 0;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .section-tagline {
+                font-size: 18px;
+            }
+            
+            .accordion-question {
+                font-size: 18px;
+            }
+            
+            .cta-question {
+                font-size: 28px;
+            }
+            
+            .cta-answer {
+                font-size: 16px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h1>Financial Planning & Analysis</h1>
+            <p>AI-powered insights that help founders and CFOs make confident decisions about cash, customers, and growth</p>
+        </div>
+    </section>
+    
+    <!-- SECTION 1: CASH & RUNWAY -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">Priority 1: Survival</div>
+                <h2 class="section-title">Cash & Runway</h2>
+                <p class="section-tagline">Know exactly when the money runs out—and what to do about it</p>
+            </div>
+            
+            <div class="accordion">
+                <!-- Q1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Do we have enough cash to hit our next milestone?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal's AI-powered runway forecasting integrates your burn rate, debt schedules, and leverage ratios in real time. Our automated dashboards instantly show when your cash runway dips below safe zones or when debt covenants approach breach—giving you weeks or months of advance warning to secure financing, cut costs, or adjust your growth strategy.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Real-time cash runway calculations updated daily</li>
+                                    <li>Automated alerts when runway drops below 6, 9, or 12 months</li>
+                                    <li>Scenario modeling: "What if we cut burn by 20%?" or "What if this deal closes?"</li>
+                                    <li>Covenant monitoring with breach predictions</li>
+                                    <li>Milestone-based capital planning</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="demo-insight">
+                                <div class="demo-insight-label">Demo Insight</div>
+                                <p>Terminal automatically flagged that your current burn rate of $425K/month gives you 8.2 months of runway. With your Series A target of $5M planned for Q3, the system shows you need to either reduce burn by 15% or accelerate fundraising by 6 weeks to maintain safe runway.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Q2 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Are we about to breach our debt covenants?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Stop manually tracking covenant compliance. Terminal automatically monitors your leverage ratios, EBITDA requirements, and debt schedules against your loan agreements. Get alerted weeks before potential breaches, with specific recommendations on which metrics need improvement.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Automated covenant tracking across all debt facilities</li>
+                                    <li>Early warning system (30, 60, 90 days before breach)</li>
+                                    <li>"What if" scenarios to test remediation strategies</li>
+                                    <li>Lender-ready compliance reports</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="section-divider"></div>
+    
+    <!-- SECTION 2: REVENUE RISK -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">Priority 2: Revenue Stability</div>
+                <h2 class="section-title">Revenue Risk & Customer Concentration</h2>
+                <p class="section-tagline">Know which customers keep you up at night—and what happens if they leave</p>
+            </div>
+            
+            <div class="accordion">
+                <!-- Q3 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">What happens if we lose our biggest customer?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal's revenue concentration analysis automatically flags when you're dangerously dependent on a handful of clients. Our AI analyzes customer engagement patterns, contract cycles, and churn signals to identify which relationships pose the biggest risk to your business—before it's too late.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Automatic concentration risk scoring (Top 1, 3, 5, 10 customers)</li>
+                                    <li>Customer health metrics: engagement frequency, payment patterns, contract renewal dates</li>
+                                    <li>Churn prediction alerts for high-value accounts</li>
+                                    <li>Industry diversification analysis</li>
+                                    <li>Scenario modeling: revenue impact if key customers churn</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="demo-insight">
+                                <div class="demo-insight-label">Demo Insight</div>
+                                <p>Your top customer represents 5.96% of revenue—well within safe limits. However, Terminal identified that 33% of your revenue ($3.1M) comes from customers with less than 3 months of engagement history. The system flagged 3 specific accounts showing declining engagement patterns, representing $500K of at-risk revenue that needs immediate customer success attention.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Q4 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Is our revenue too concentrated in one industry?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal analyzes your revenue across industries and flags dangerous concentration. Get insights into which verticals drive your growth and where you need diversification.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Industry revenue breakdown with risk assessment</li>
+                                    <li>Sector-specific churn patterns</li>
+                                    <li>Recommended diversification targets</li>
+                                    <li>Competitive benchmarks by vertical</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="section-divider"></div>
+    
+    <!-- SECTION 3: BOOK QUALITY -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">Priority 3: Data Trust</div>
+                <h2 class="section-title">Financial Accuracy & Book Quality</h2>
+                <p class="section-tagline">Clean books, confident decisions, zero surprises</p>
+            </div>
+            
+            <div class="accordion">
+                <!-- Q5 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Can I trust the numbers I'm making decisions on?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal's AI-powered categorization ensures every transaction lands in the right place automatically. Our machine learning scans your books for duplicates, inconsistencies, and anomalies in real time—catching errors before they become audit risks or bad decisions.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Automated transaction categorization with 95%+ accuracy</li>
+                                    <li>Duplicate detection and flagging</li>
+                                    <li>Anomaly alerts for unusual transactions or patterns</li>
+                                    <li>Real-time error correction suggestions</li>
+                                    <li>Audit-ready reconciliations</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="demo-insight">
+                                <div class="demo-insight-label">Demo Insight</div>
+                                <p>Terminal automatically categorized 10,847 transactions last month with 97.3% accuracy, flagged 12 potential duplicates totaling $43K, and identified 3 vendor payments that exceeded normal patterns by 200%+—preventing $18K in duplicate payments and catching a fraudulent invoice.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Q6 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Why does our month-end close take so long?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">By eliminating manual cleanup and categorization, Terminal accelerates your close cycle from weeks to days. Your FP&A team gets reliable, timely inputs for forecasting and investor reporting—with zero delays.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Automated reconciliation across bank feeds, ERP, and payroll</li>
+                                    <li>Pre-built close checklists and workflows</li>
+                                    <li>Real-time close progress tracking</li>
+                                    <li>Standardized reporting templates</li>
+                                    <li>Error detection before close starts</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Q7 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">How do I organize our chart of accounts for better insights?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal automatically creates intelligent account groupings that align with your business model and industry standards. Get standardized income statements, balance sheets, and cash flow reports that investors and lenders actually want to see.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>AI-generated account grouping recommendations</li>
+                                    <li>Custom financial statement templates</li>
+                                    <li>Industry-standard classifications</li>
+                                    <li>One-click reorganization without touching your source data</li>
+                                    <li>Historical restatements when you change structures</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="demo-insight">
+                                <div class="demo-insight-label">Demo Insight</div>
+                                <p>Terminal analyzed your journal entries and created 23 account groupings that reduced your income statement from 247 line items to a clean, scannable format. The system identified $1.2M in "Other Expenses" and automatically suggested 8 more specific categories, uncovering that 42% was actually sales commissions that should be reclassified as COGS.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="section-divider"></div>
+    
+    <!-- SECTION 4: EXPENSE CONTROL -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">Priority 4: Cost Management</div>
+                <h2 class="section-title">Expense Control & Compliance</h2>
+                <p class="section-tagline">Catch cost overruns and compliance gaps before they hurt</p>
+            </div>
+            
+            <div class="accordion">
+                <!-- Q8 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Where is our money actually going?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal integrates directly with your expense systems, payroll, and vendor flows to identify hidden inefficiencies and unexpected cost spikes. No more surprise budget overruns at month-end.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Real-time expense tracking by category, department, and vendor</li>
+                                    <li>Budget vs. actual variance alerts</li>
+                                    <li>Unusual spending pattern detection</li>
+                                    <li>Vendor spend consolidation opportunities</li>
+                                    <li>Department-level burn analysis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Q9 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">Are we compliant with all our financial obligations?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal's anomaly detection flags missing filings, unusual transaction patterns, and compliance gaps automatically. Course-correct before regulators, auditors, or investors find issues.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Automated compliance checklist tracking</li>
+                                    <li>Missing documentation alerts</li>
+                                    <li>Suspicious transaction flagging</li>
+                                    <li>Audit preparation reports</li>
+                                    <li>SOX and GAAP compliance monitoring</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="section-divider"></div>
+    
+    <!-- SECTION 5: CONSOLIDATION -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">Priority 5: Multi-Entity Management</div>
+                <h2 class="section-title">Multi-Entity Consolidation</h2>
+                <p class="section-tagline">One view of truth across all your entities</p>
+            </div>
+            
+            <div class="accordion">
+                <!-- Q10 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">How do I get a consolidated view across all our entities?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Managing multiple legal entities shouldn't mean juggling multiple sets of books. Terminal automatically consolidates financial data across all your subsidiaries, divisions, and entities—eliminating intercompany transactions and giving you one accurate view of your entire business.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Automated multi-entity consolidation</li>
+                                    <li>Intercompany elimination with zero manual work</li>
+                                    <li>Entity-level and consolidated reporting in seconds</li>
+                                    <li>Currency translation for international entities</li>
+                                    <li>Drill-down capability from consolidated to entity level</li>
+                                    <li>Support for complex ownership structures</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="demo-insight">
+                                <div class="demo-insight-label">Demo Insight</div>
+                                <p>Terminal consolidated your 4 operating entities (US parent, EU subsidiary, 2 project SPVs) in under 10 seconds, automatically eliminating $2.3M in intercompany transactions and identifying a $47K reconciliation gap between entities that was causing monthly close delays.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="section-divider"></div>
+    
+    <!-- SECTION 6: STRATEGIC PLANNING -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">Priority 6: Future Planning</div>
+                <h2 class="section-title">Strategic Planning & Forecasting</h2>
+                <p class="section-tagline">Model your future with confidence</p>
+            </div>
+            
+            <div class="accordion">
+                <!-- Q11 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-question">What if we grow 50% faster than planned?</div>
+                        <div class="accordion-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p class="accordion-answer">Terminal's scenario modeling lets you test unlimited "what if" scenarios instantly. Model different growth rates, hiring plans, or market conditions to make better strategic decisions.</p>
+                            
+                            <div class="features-list">
+                                <h4>What you get:</h4>
+                                <ul>
+                                    <li>Unlimited scenario creation and comparison</li>
+                                    <li>Sensitivity analysis on key assumptions</li>
+                                    <li>Growth trajectory modeling</li>
+                                    <li>Hiring plan impact analysis</li>
+                                    <li>Board-ready forecast presentations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-question">How do I get started with Terminal?</h2>
+                <p class="cta-answer">Getting started is simple. Connect your accounting system (QuickBooks or Xero) and we'll have your first insights ready in under 24 hours. Most CFOs see their first "aha moment" within the first week—whether that's catching a revenue concentration risk, identifying a cash crunch, or discovering where their money is actually going.</p>
+                
+                <div class="cta-steps">
+                    <h4>Next Steps:</h4>
+                    <div class="cta-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h5>Book a 15-minute demo</h5>
+                            <p>See Terminal in action with your data</p>
+                        </div>
+                    </div>
+                    <div class="cta-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h5>Connect your systems</h5>
+                            <p>One-click integration with QuickBooks/Xero</p>
+                        </div>
+                    </div>
+                    <div class="cta-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h5>Get insights in 24 hours</h5>
+                            <p>We'll have your dashboards ready by tomorrow</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons">
+                    <button class="btn btn-primary">See Terminal in Action - Book Demo</button>
+                    <button class="btn btn-secondary">Start Free 14-Day Trial</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- JAVASCRIPT -->
+    <script>
+        // Accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const contentInner = item.querySelector('.accordion-content-inner');
+                
+                header.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all accordion items
+                    accordionItems.forEach(i => {
+                        i.classList.remove('active');
+                        i.querySelector('.accordion-content').style.maxHeight = null;
+                    });
+                    
+                    // Open clicked item if it wasn't active
+                    if (!isActive) {
+                        item.classList.add('active');
+                        content.style.maxHeight = contentInner.scrollHeight + 'px';
+                    }
+                });
+            });
+            
+            // Optional: Open first item by default
+            if (accordionItems.length > 0) {
+                const firstItem = accordionItems[0];
+                firstItem.classList.add('active');
+                const firstContent = firstItem.querySelector('.accordion-content');
+                const firstContentInner = firstItem.querySelector('.accordion-content-inner');
+                firstContent.style.maxHeight = firstContentInner.scrollHeight + 'px';
+            }
+        });
+        
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Write(**)",
+      "Glob(**)",
+      "Grep(**)",
+      "Bash(python:*)"
+    ],
+    "deny": []
+  },
+  "auto_run_scripts": false
+}

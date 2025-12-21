@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/Private Journal/**)",
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/_Planning/**)",
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/^Archive/_Daily Anchor - Archive/**)",
+      "Read(/Users/vic-gini/Documents/Victor L Obsidian Vault/**)"
+    ]
+  }
+}

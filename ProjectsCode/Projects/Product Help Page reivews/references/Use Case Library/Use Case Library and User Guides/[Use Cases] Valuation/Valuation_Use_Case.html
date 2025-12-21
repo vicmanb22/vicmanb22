@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valuation Solutions | Terminal by Verified Metrics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; line-height: 1.6; color: #102A36; background-color: #ffffff; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+        @media (min-width: 640px) { .container { padding: 0 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+        .bg-terminal-blue-900 { background-color: #102A36; }
+        .bg-terminal-blue-700 { background-color: #173F52; }
+        .bg-terminal-blue-500 { background-color: #326882; }
+        .bg-terminal-blue-200 { background-color: #B1C8D2; }
+        .bg-terminal-blue-100 { background-color: #DEE9EF; }
+        .bg-terminal-lemon-700 { background-color: #DED852; }
+        .bg-terminal-lemon-500 { background-color: #EFEA68; }
+        .bg-terminal-lemon-300 { background-color: #F1EE97; }
+        .bg-terminal-lemon-100 { background-color: #FFFA75; }
+        .bg-white { background-color: #ffffff; }
+        .bg-green-600 { background-color: #16A34A; }
+        .bg-red-500 { background-color: #EF4444; }
+        .text-terminal-blue-900 { color: #102A36; }
+        .text-terminal-blue-700 { color: #173F52; }
+        .text-terminal-blue-500 { color: #326882; }
+        .text-terminal-blue-200 { color: #B1C8D2; }
+        .text-terminal-lemon-700 { color: #DED852; }
+        .text-white { color: #ffffff; }
+        .border-terminal-blue-200 { border-color: #B1C8D2; }
+        .border-terminal-blue-700 { border-color: #173F52; }
+        .border-terminal-lemon-700 { border-color: #DED852; }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .justify-between { justify-content: space-between; }
+        .flex-1 { flex: 1; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .md\\:text-2xl { font-size: 1.5rem; }
+            .md\\:text-3xl { font-size: 1.875rem; }
+            .md\\:text-5xl { font-size: 3rem; }
+            .md\\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+        }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .w-5 { width: 1.25rem; }
+        .w-8 { width: 2rem; }
+        .w-12 { width: 3rem; }
+        .w-full { width: 100%; }
+        .h-2 { height: 0.5rem; }
+        .h-5 { height: 1.25rem; }
+        .h-8 { height: 2rem; }
+        .h-12 { height: 3rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-5xl { max-width: 64rem; }
+        .text-xs { font-size: 0.75rem; line-height: 1.4; }
+        .text-sm { font-size: 0.875rem; line-height: 1.5; }
+        .text-base { font-size: 1rem; line-height: 1.6; }
+        .text-lg { font-size: 1.125rem; line-height: 1.6; }
+        .text-xl { font-size: 1.25rem; line-height: 1.5; }
+        .text-2xl { font-size: 1.5rem; line-height: 1.3; }
+        .text-3xl { font-size: 1.875rem; line-height: 1.3; }
+        .text-4xl { font-size: 2.25rem; line-height: 1.2; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-center { text-align: center; }
+        .leading-relaxed { line-height: 1.625; }
+        .border { border-width: 1px; border-style: solid; }
+        .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+        .border-l-4 { border-left-width: 4px; border-left-style: solid; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .fixed { position: fixed; }
+        .bottom-8 { bottom: 2rem; }
+        .right-8 { right: 2rem; }
+        .z-50 { z-index: 50; }
+        .overflow-x-auto { overflow-x: auto; }
+        .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+        .from-terminal-blue-700 { --tw-gradient-from: #173F52; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(23, 63, 82, 0)); }
+        .to-terminal-blue-900 { --tw-gradient-to: #102A36; }
+        button { cursor: pointer; border: none; outline: none; transition: all 0.2s ease-out; }
+        button:hover { opacity: 0.9; }
+        .hover\\:bg-terminal-lemon-500:hover { background-color: #EFEA68; }
+        .metric-card { transition: all 0.2s ease-out; }
+        .metric-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .qa-item { transition: all 0.2s ease-out; }
+        .qa-item:hover { background-color: #DEE9EF; }
+        svg { display: inline-block; vertical-align: middle; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+    </style>
+</head>
+<body class="bg-white text-terminal-blue-900">
+
+    <div class="fixed bottom-8 right-8 z-50">
+        <button class="bg-terminal-lemon-700 text-terminal-blue-700 px-6 py-3 font-semibold hover:bg-terminal-lemon-500 shadow-lg">Book a Demo</button>
+    </div>
+
+    <section class="bg-terminal-blue-900 text-white py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <svg class="w-12 h-12 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    <h1 class="text-4xl md:text-5xl font-semibold">Valuation Solutions</h1>
+                </div>
+                <p class="text-xl md:text-2xl text-terminal-blue-200 leading-relaxed">Institutional-grade valuations powered by real data—fast, defensible, and built for your decision-making</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-gradient-to-r from-terminal-blue-700 to-terminal-blue-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <p class="text-2xl md:text-3xl font-medium">Valuation backed by real data, not guesswork</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">What is this company really worth?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-6">We deliver an instant, comprehensive valuation using multiple methodologies following IPEV valuation principles. Our platform automatically calculates enterprise and equity values using DCF, comparable company analysis, and precedent transactions—all powered by real-time financial data straight from the source.</p>
+                            <div class="bg-terminal-blue-100 p-4 mb-6 border-l-4 border-terminal-lemon-700">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-terminal-lemon-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                    <span class="text-sm font-semibold text-terminal-blue-900">IPEV Valuation Guidelines Compliant</span>
+                                </div>
+                                <p class="text-sm text-terminal-blue-500 mt-2">Our valuations adhere to International Private Equity and Venture Capital (IPEV) valuation guidelines, ensuring consistency and credibility for investor reporting.</p>
+                            </div>
+                            <div class="bg-terminal-blue-100 p-8">
+                                <h4 class="text-xl font-semibold text-terminal-blue-700 mb-6">Valuation Summary Dashboard</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                    <div class="metric-card bg-white border border-terminal-blue-200 p-4">
+                                        <div class="text-xs text-terminal-blue-500 mb-2">DCF Valuation</div>
+                                        <div class="text-2xl font-semibold text-terminal-blue-900">$52.3M</div>
+                                        <div class="text-xs text-terminal-blue-700 mt-1">Weight: 40%</div>
+                                        <div class="text-xs text-terminal-blue-500">10% discount rate</div>
+                                    </div>
+                                    <div class="metric-card bg-white border border-terminal-blue-200 p-4">
+                                        <div class="text-xs text-terminal-blue-500 mb-2">Comparable Companies</div>
+                                        <div class="text-2xl font-semibold text-terminal-blue-900">$48.5M</div>
+                                        <div class="text-xs text-terminal-blue-700 mt-1">Weight: 35%</div>
+                                        <div class="text-xs text-terminal-blue-500">7.8x EV/Revenue</div>
+                                    </div>
+                                    <div class="metric-card bg-white border border-terminal-blue-200 p-4">
+                                        <div class="text-xs text-terminal-blue-500 mb-2">Precedent Transactions</div>
+                                        <div class="text-2xl font-semibold text-terminal-blue-900">$46.2M</div>
+                                        <div class="text-xs text-terminal-blue-700 mt-1">Weight: 25%</div>
+                                        <div class="text-xs text-terminal-blue-500">8.5x EV/EBITDA</div>
+                                    </div>
+                                </div>
+                                <div class="bg-terminal-lemon-300 border border-terminal-lemon-700 p-6 mb-6">
+                                    <div class="grid grid-cols-2 gap-6">
+                                        <div>
+                                            <div class="text-sm font-medium text-terminal-blue-700 mb-2">Weighted Average Valuation</div>
+                                            <div class="text-3xl font-bold text-terminal-blue-900">$49.8M</div>
+                                            <div class="text-xs text-terminal-blue-500 mt-1">Enterprise Value</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-terminal-blue-700 mb-2">Equity Value</div>
+                                            <div class="text-3xl font-bold text-terminal-blue-900">$45.2M</div>
+                                            <div class="text-xs text-terminal-blue-500 mt-1">Net Debt: $4.6M</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="bg-white p-3 border border-terminal-blue-200">
+                                        <div class="text-xs text-terminal-blue-500">Fair Value/Share</div>
+                                        <div class="text-lg font-semibold text-terminal-blue-900">$12.85</div>
+                                    </div>
+                                    <div class="bg-white p-3 border border-terminal-blue-200">
+                                        <div class="text-xs text-terminal-blue-500">Implied P/E</div>
+                                        <div class="text-lg font-semibold text-terminal-blue-900">18.2x</div>
+                                    </div>
+                                    <div class="bg-white p-3 border border-terminal-blue-200">
+                                        <div class="text-xs text-terminal-blue-500">EV/Revenue</div>
+                                        <div class="text-lg font-semibold text-terminal-blue-900">7.5x</div>
+                                    </div>
+                                    <div class="bg-white p-3 border border-terminal-blue-200">
+                                        <div class="text-xs text-terminal-blue-500">EV/EBITDA</div>
+                                        <div class="text-lg font-semibold text-terminal-blue-900">8.1x</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-terminal-blue-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">How defensible is VM's valuation output?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">Our valuations are built on data pulled directly from accounting software APIs—eliminating manual entry, spreadsheet errors, and outdated figures. Every calculation uses real journal-level entries, ensuring institutional-grade accuracy that holds up in any boardroom or investment committee.</p>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-6">Beyond data accuracy, we follow industry best practices and strictly adhere to IPEV valuation principles. Our team includes former Big 4 advisors and valuation specialists who review every valuation to ensure it meets the highest standards of rigor and defensibility.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-terminal-blue-100 p-4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-terminal-lemon-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        <span class="text-sm font-semibold text-terminal-blue-700">Data Integrity</span>
+                                    </div>
+                                    <div class="text-sm text-terminal-blue-500">• Direct API connections<br>• Real-time updates<br>• Audit trail for every number<br>• Zero manual errors</div>
+                                </div>
+                                <div class="bg-terminal-blue-100 p-4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-terminal-lemon-700" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                                        <span class="text-sm font-semibold text-terminal-blue-700">Expert Team</span>
+                                    </div>
+                                    <div class="text-sm text-terminal-blue-500">• Big 4 experience<br>• Valuation specialists<br>• IPEV compliance<br>• Industry best practices</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">What valuation methods would VM incorporate?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">We use only valuation methods widely accepted in the industry, strictly adhering to IPEV valuation principles. This approach ensures your valuations are consistent, credible, and comparable—essential for investor reporting and regulatory compliance.</p>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-6">Our platform automatically selects and weights the most appropriate methods based on each company's characteristics. For high-growth SaaS companies, we emphasize revenue multiples; for mature businesses, we lean on DCF analysis. Every approach aligns with industry standards and best practices.</p>
+                            <div class="bg-terminal-blue-100 p-4 mt-4">
+                                <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Recommended Methods by Company Type</h5>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 border-l-4 border-terminal-lemon-700">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="font-medium text-terminal-blue-900">Profitable/Mature Companies</span>
+                                            <span class="text-xs px-2 py-1 bg-terminal-lemon-300 text-terminal-blue-900">Primary</span>
+                                        </div>
+                                        <div class="text-sm text-terminal-blue-500">DCF (40%), Comparable Companies (35%), Precedent Transactions (25%)</div>
+                                    </div>
+                                    <div class="bg-white p-3 border-l-4 border-terminal-blue-500">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="font-medium text-terminal-blue-900">Early-Stage/High Growth</span>
+                                            <span class="text-xs px-2 py-1 bg-terminal-blue-200 text-terminal-blue-900">Alternative</span>
+                                        </div>
+                                        <div class="text-sm text-terminal-blue-500">Revenue multiples, VC method, comparable transactions</div>
+                                    </div>
+                                    <div class="bg-white p-3 border-l-4 border-terminal-blue-500">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="font-medium text-terminal-blue-900">Asset-Heavy Businesses</span>
+                                            <span class="text-xs px-2 py-1 bg-terminal-blue-200 text-terminal-blue-900">Specialized</span>
+                                        </div>
+                                        <div class="text-sm text-terminal-blue-500">Adjusted Net Asset Value, replacement cost, market comparables</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">How does VM gather data for valuation assumptions?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">We source data exclusively from credible, industry-standard providers including Capital IQ, PitchBook, company-provided documents, and publicly available information. Every assumption we make is backed by reliable, verifiable data that can withstand scrutiny.</p>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-6">What sets VM apart is Terminal—our AI-powered assistant that dramatically accelerates information gathering and analysis. Terminal extracts relevant data from multiple sources, identifies key metrics, and flags potential issues, all while maintaining the accuracy and rigor institutional investors demand.</p>
+                            <div class="bg-terminal-blue-100 p-4 mt-4">
+                                <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Data Sources & Tools</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-4 border border-terminal-blue-200">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <svg class="w-5 h-5 text-terminal-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                            <span class="text-sm font-semibold text-terminal-blue-900">Market Data Providers</span>
+                                        </div>
+                                        <div class="text-sm text-terminal-blue-500">• Capital IQ<br>• PitchBook<br>• Public filings<br>• Industry reports</div>
+                                    </div>
+                                    <div class="bg-white p-4 border border-terminal-blue-200">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <svg class="w-5 h-5 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                            <span class="text-sm font-semibold text-terminal-blue-900">Terminal AI Assistant</span>
+                                        </div>
+                                        <div class="text-sm text-terminal-blue-500">• Rapid data extraction<br>• Intelligent analysis<br>• Anomaly detection<br>• 10x faster research</div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 bg-white p-3 border-l-4 border-terminal-lemon-700">
+                                    <div class="text-sm text-terminal-blue-900"><strong>Plus:</strong> Direct integration with company accounting systems for real-time financial data and company-provided strategic documents and forecasts.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex items-start gap-4 mb-12">
+                    <div class="flex-shrink-0">
+                        <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div class="flex-1 p-6 border border-terminal-blue-700 bg-terminal-blue-100">
+                        <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">What if I want to work on a Leveraged Buyout deal?</h3>
+                        <p class="text-base text-terminal-blue-900 leading-relaxed">VM's platform extends beyond equity valuation to support comprehensive LBO modeling and analysis. We help you model the complete transaction from acquisition to exit, optimize debt structures, and project returns across multiple scenarios—all using the same reliable data foundation that powers our equity valuations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gradient-to-r from-terminal-blue-700 to-terminal-blue-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <p class="text-2xl md:text-3xl font-medium">Build an investment thesis, not just an Excel model</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-12">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">What is this company worth in an LBO?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-6">We model the complete leveraged buyout from acquisition to exit, instantly calculating purchase price, optimal debt structure, and expected returns based on your target IRR. Our platform shows you how different leverage levels and exit scenarios impact your investment thesis, giving you the clarity you need to make confident decisions.</p>
+                            <div class="bg-terminal-blue-100 p-8">
+                                <h4 class="text-xl font-semibold text-terminal-blue-700 mb-6">LBO Transaction Summary</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-white border border-terminal-blue-200 p-4">
+                                        <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Sources & Uses</h5>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="pb-2 border-b border-terminal-blue-100">
+                                                <div class="font-medium text-terminal-blue-900 mb-1">Sources</div>
+                                                <div class="flex justify-between"><span class="text-terminal-blue-500">Senior Debt</span><span>$17.0M (55%)</span></div>
+                                                <div class="flex justify-between"><span class="text-terminal-blue-500">Subordinated Debt</span><span>$3.0M (10%)</span></div>
+                                                <div class="flex justify-between"><span class="text-terminal-blue-500">Equity</span><span>$10.8M (35%)</span></div>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-terminal-blue-900 mb-1">Uses</div>
+                                                <div class="flex justify-between"><span class="text-terminal-blue-500">Purchase Price</span><span>$30.0M</span></div>
+                                                <div class="flex justify-between"><span class="text-terminal-blue-500">Transaction Fees</span><span>$0.8M</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white border border-terminal-blue-200 p-4">
+                                        <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Transaction Metrics</h5>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between items-center"><span class="text-sm text-terminal-blue-500">Entry Multiple</span><span class="font-medium">5.0x EBITDA</span></div>
+                                            <div class="flex justify-between items-center"><span class="text-sm text-terminal-blue-500">Total Leverage</span><span class="font-medium">3.3x</span></div>
+                                            <div class="flex justify-between items-center"><span class="text-sm text-terminal-blue-500">Interest Coverage</span><span class="font-medium">3.5x</span></div>
+                                            <div class="flex justify-between items-center"><span class="text-sm text-terminal-blue-500">DSCR</span><span class="font-medium">1.8x</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-terminal-lemon-300 border border-terminal-lemon-700 p-6 mb-6">
+                                    <h5 class="text-lg font-semibold text-terminal-blue-700 mb-4">Expected Returns (5-Year Exit)</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="text-center">
+                                            <div class="text-xs text-terminal-blue-700 mb-1">Base Case</div>
+                                            <div class="text-2xl font-bold text-terminal-blue-900">22.5% IRR</div>
+                                            <div class="text-sm text-terminal-blue-500">2.8x MOIC</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-xs text-terminal-blue-700 mb-1">Upside Case</div>
+                                            <div class="text-2xl font-bold text-terminal-blue-900">28.3% IRR</div>
+                                            <div class="text-sm text-terminal-blue-500">3.5x MOIC</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-xs text-terminal-blue-700 mb-1">Downside Case</div>
+                                            <div class="text-2xl font-bold text-terminal-blue-900">15.2% IRR</div>
+                                            <div class="text-sm text-terminal-blue-500">2.0x MOIC</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="bg-white p-3 border border-terminal-blue-200"><div class="text-xs text-terminal-blue-500">Exit Multiple</div><div class="text-lg font-semibold text-terminal-blue-900">6.0x</div></div>
+                                    <div class="bg-white p-3 border border-terminal-blue-200"><div class="text-xs text-terminal-blue-500">Exit Value</div><div class="text-lg font-semibold text-terminal-blue-900">$54M</div></div>
+                                    <div class="bg-white p-3 border border-terminal-blue-200"><div class="text-xs text-terminal-blue-500">Equity Value</div><div class="text-lg font-semibold text-terminal-blue-900">$30.2M</div></div>
+                                    <div class="bg-white p-3 border border-terminal-blue-200"><div class="text-xs text-terminal-blue-500">Net Debt</div><div class="text-lg font-semibold text-terminal-blue-900">$8.5M</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-terminal-blue-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">What returns can I expect from this LBO investment?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">We model multiple exit scenarios with detailed IRR and cash-on-cash returns for every investor class. Our platform calculates returns across different holding periods, exit multiples, and growth assumptions, clearly showing you where value creation comes from and what drives your returns.</p>
+                            <div class="bg-terminal-blue-100 p-4 mt-4">
+                                <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Returns Sensitivity Analysis</h5>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead><tr class="border-b border-terminal-blue-200"><th class="text-left py-2 text-terminal-blue-700">Exit Year</th><th class="text-center py-2 text-terminal-blue-700">5.5x Exit</th><th class="text-center py-2 text-terminal-blue-700">6.0x Exit</th><th class="text-center py-2 text-terminal-blue-700">6.5x Exit</th></tr></thead>
+                                        <tbody>
+                                            <tr class="border-b border-terminal-blue-100"><td class="py-2 text-terminal-blue-900">Year 3</td><td class="text-center py-2">24.1%</td><td class="text-center py-2">28.7%</td><td class="text-center py-2">33.2%</td></tr>
+                                            <tr class="border-b border-terminal-blue-100"><td class="py-2 text-terminal-blue-900">Year 5</td><td class="text-center py-2 bg-terminal-lemon-100">19.8%</td><td class="text-center py-2 bg-terminal-lemon-100">22.5%</td><td class="text-center py-2 bg-terminal-lemon-100">25.1%</td></tr>
+                                            <tr><td class="py-2 text-terminal-blue-900">Year 7</td><td class="text-center py-2">16.3%</td><td class="text-center py-2">18.2%</td><td class="text-center py-2">20.0%</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-3 text-xs text-terminal-blue-500">IRR calculations include all fees and carried interest • Base case highlighted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">How much debt can this LBO deal support?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">Our platform automatically calculates maximum leverage capacity based on cash flow coverage, industry benchmarks, and lender requirements. We show you exactly how much senior, mezzanine, and unitranche debt the business can service while maintaining covenant compliance—giving you confidence in your capital structure decisions.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-white border border-terminal-blue-200 p-4">
+                                    <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Debt Capacity Analysis</h5>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between mb-1"><span class="text-sm text-terminal-blue-500">Maximum Total Debt</span><span class="text-sm font-medium">$22.5M</span></div>
+                                            <div class="w-full bg-terminal-blue-100 h-2"><div class="bg-terminal-lemon-700 h-2" style="width: 75%"></div></div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-1"><span class="text-sm text-terminal-blue-500">Recommended Debt</span><span class="text-sm font-medium">$20.0M</span></div>
+                                            <div class="w-full bg-terminal-blue-100 h-2"><div class="bg-terminal-blue-500 h-2" style="width: 65%"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-xs text-terminal-blue-500 mt-3">Based on: 3.5x leverage limit • Min 1.25x DSCR • 3x interest coverage</div>
+                                </div>
+                                <div class="bg-white border border-terminal-blue-200 p-4">
+                                    <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Recommended Structure</h5>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="pb-2 border-b border-terminal-blue-100">
+                                            <div class="flex justify-between"><span class="text-terminal-blue-500">Revolver</span><span class="font-medium">$3.0M</span></div>
+                                            <div class="flex justify-between"><span class="text-terminal-blue-500">Term Loan A</span><span class="font-medium">$10.0M</span></div>
+                                            <div class="flex justify-between"><span class="text-terminal-blue-500">Term Loan B</span><span class="font-medium">$7.0M</span></div>
+                                        </div>
+                                        <div class="flex justify-between"><span class="text-terminal-blue-500">Total Debt</span><span class="font-medium">$20.0M</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">What are the key risks in this LBO deal?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">Our platform automatically identifies and quantifies key risks including revenue concentration, covenant headroom, refinancing requirements, and market sensitivity. We provide comprehensive stress-test scenarios showing exactly how your returns hold up under adverse conditions, so you can underwrite with confidence.</p>
+                            <div class="bg-terminal-blue-100 p-4 mt-4">
+                                <h5 class="text-sm font-semibold text-terminal-blue-700 mb-3">Risk Dashboard</h5>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 border-l-4 border-red-500">
+                                        <div class="flex justify-between items-center mb-1"><span class="font-medium text-terminal-blue-900">Customer Concentration</span><span class="text-xs px-2 py-1 bg-red-500 text-white">High Risk</span></div>
+                                        <div class="text-sm text-terminal-blue-500">Top 3 customers = 62% of revenue</div>
+                                    </div>
+                                    <div class="bg-white p-3 border-l-4 border-terminal-lemon-700">
+                                        <div class="flex justify-between items-center mb-1"><span class="font-medium text-terminal-blue-900">Covenant Headroom</span><span class="text-xs px-2 py-1 bg-terminal-lemon-300 text-terminal-blue-900">Medium Risk</span></div>
+                                        <div class="text-sm text-terminal-blue-500">15% EBITDA cushion vs. covenants</div>
+                                    </div>
+                                    <div class="bg-white p-3 border-l-4 border-green-600">
+                                        <div class="flex justify-between items-center mb-1"><span class="font-medium text-terminal-blue-900">Market Position</span><span class="text-xs px-2 py-1 bg-green-600 text-white">Low Risk</span></div>
+                                        <div class="text-sm text-terminal-blue-500">Strong competitive moat, recurring revenue</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">How accurate are the numbers in VM's LBO analysis?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">Our LBO models are built on data pulled directly from accounting software APIs—eliminating manual entry, spreadsheet errors, and outdated figures. Every calculation uses real journal-level entries, ensuring institutional-grade accuracy that holds up with your investment committee and lenders.</p>
+                            <div class="bg-terminal-blue-100 p-4 mt-4">
+                                <div class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                    <div>
+                                        <div class="text-sm font-medium text-terminal-blue-900 mb-1">Data Integrity Guaranteed</div>
+                                        <div class="text-sm text-terminal-blue-500">Direct API connections • Real-time updates • Audit trail for every number • Zero manual transcription errors</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <div class="qa-item flex-1 p-6 border border-terminal-blue-200 bg-white">
+                            <h3 class="text-2xl font-semibold text-terminal-blue-700 mb-4">How can I validate that VM's LBO model is defensible?</h3>
+                            <p class="text-base text-terminal-blue-900 leading-relaxed mb-4">Two ways: First, Terminal—our AI assistant—analyzes your assumptions, flags potential issues, and benchmarks against thousands of similar LBO deals, all while keeping your data completely secure. Second, our private equity professionals provide real-time guidance, bringing years of deal experience without the consultant fees.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-terminal-blue-100 p-4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                        <span class="text-sm font-semibold text-terminal-blue-700">Terminal AI Assistant</span>
+                                    </div>
+                                    <div class="text-sm text-terminal-blue-500">• Instant sanity checks<br>• Leverage optimization<br>• LBO benchmark comparisons<br>• 100% data privacy</div>
+                                </div>
+                                <div class="bg-terminal-blue-100 p-4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-terminal-lemon-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                        <span class="text-sm font-semibold text-terminal-blue-700">Expert Team</span>
+                                    </div>
+                                    <div class="text-sm text-terminal-blue-500">• On-demand support<br>• Deal structuring advice<br>• PE expertise<br>• IC presentation review</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-terminal-blue-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-3xl font-semibold text-terminal-blue-700 mb-6">Ready to transform how you value companies?</h3>
+                <p class="text-lg text-terminal-blue-900 mb-8 leading-relaxed">See how VM delivers institutional-grade valuations and LBO models in minutes, not days. From IPEV-compliant equity valuations to comprehensive leveraged buyout analysis, get accurate results backed by real data and expert guidance.</p>
+                <button class="bg-terminal-lemon-700 text-terminal-blue-700 px-8 py-4 text-lg font-semibold hover:bg-terminal-lemon-500">Book a Demo</button>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

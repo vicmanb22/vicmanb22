@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/vic-gini/ProjectsCode/Agents/AudioTranscriptCleanup/**)",
+      "Write(/Users/vic-gini/ProjectsCode/Agents/AudioTranscriptCleanup/**)",
+      "Glob(**)",
+      "Grep(**)"
+    ],
+    "deny": []
+  }
+}
