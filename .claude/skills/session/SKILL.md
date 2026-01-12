@@ -27,6 +27,26 @@ This skill operates on the current workspace (detected via CLAUDE.md). Required 
 
 ---
 
+## Status Values
+
+Use these standard statuses consistently across all session logs and plans:
+
+| Status | When to Use | Location |
+|--------|-------------|----------|
+| `Planning` | Designing approach, not yet implementing | in-progress/ |
+| `Active` | Currently being worked on | in-progress/ |
+| `Paused` | On hold, will resume later | in-progress/ |
+| `Complete` | Work finished, may need testing | archive/ |
+| `Production` | Tested, stable, in regular use | archive/ |
+| `Deprecated` | Superseded by newer work | archive/ |
+
+**Rules:**
+- Files in `in-progress/` should have status: `Planning`, `Active`, or `Paused`
+- Files in `archive/` should have status: `Complete`, `Production`, or `Deprecated`
+- When archiving, update status before moving the file
+
+---
+
 ## Workspace Detection
 
 **Before running any commands**, detect the workspace root by finding CLAUDE.md.
