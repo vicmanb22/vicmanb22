@@ -79,9 +79,12 @@ echo "Workspace: $WORKSPACE_ROOT"
 
 **All paths in this skill use `$WORKSPACE_ROOT` as the base.**
 
-For subsequent commands, use the detected workspace root. For example:
-- `"$WORKSPACE_ROOT/in-progress/session-logs-plans"` instead of `in-progress/session-logs-plans`
-- `"$WORKSPACE_ROOT/archive/plans"` instead of `archive/plans`
+**IMPORTANT: Shell Persistence**
+Each Bash tool call runs in a **new shell session** - variables do not persist between calls. You MUST include the workspace detection snippet at the top of EVERY Bash command. Use this compact one-liner version for brevity:
+
+```bash
+dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
+```
 
 ---
 
@@ -92,14 +95,12 @@ When `/session` is invoked without arguments, display this menu.
 **First, gather data:**
 
 ```bash
-# List all sessions in session-logs-plans
-ls -t "$WORKSPACE_ROOT/in-progress/session-logs-plans"/*.md 2>/dev/null | head -20
+# Detect workspace (required - each Bash call is a new shell)
+dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
 
-# Get modification times
+# List sessions with modification times
 for f in "$WORKSPACE_ROOT/in-progress/session-logs-plans"/*.md; do
-  if [ -f "$f" ]; then
-    stat -f "%Sm|%N" -t "%Y-%m-%d %H:%M" "$f" 2>/dev/null
-  fi
+  [ -f "$f" ] && stat -f "%Sm|%N" -t "%Y-%m-%d %H:%M" "$f" 2>/dev/null
 done | sort -r
 ```
 
