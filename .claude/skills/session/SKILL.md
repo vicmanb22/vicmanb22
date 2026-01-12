@@ -120,6 +120,10 @@ done | sort -r
      Status: Planning | Agent: <agent> | Feature: <feature>
      Last updated: <relative time>
 
+ [3] session-2026-01-09-paused-work.md
+     Status: Paused | Agent: <agent> | Feature: <feature>
+     Last updated: <relative time>
+
 ------------------------------------------------------
  * = Currently selected session
 
@@ -672,8 +676,21 @@ SESSION COMPLETION BLOCKED
 ------------------------------------------------------
 ```
 
-3. **If all phases complete**, proceed with archival:
-   - Update status to "Complete" in session file
+3. **If all phases complete**, ask about final status:
+
+```
+COMPLETION STATUS
+==================================================
+What status should this session have?
+------------------------------------------------------
+  1. Complete    -> Work finished, may need testing
+  2. Production  -> Tested, stable, in regular use
+------------------------------------------------------
+Select [1-2]:
+```
+
+Then proceed with archival:
+   - Update status to selected value in session file
    - Update the Summary section with final state
    - Move file to `$WORKSPACE_ROOT/archive/plans/`
 
