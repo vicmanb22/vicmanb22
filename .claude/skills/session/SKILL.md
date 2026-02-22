@@ -14,6 +14,32 @@ Create and manage session logs and plans with real-time updates, cross-session c
 
 ---
 
+## Timezone Configuration
+
+**CRITICAL: All session logs must use dual timezone format**
+
+- **Primary timezone:** UTC (Coordinated Universal Time)
+- **Secondary timezone:** Hong Kong Time (UTC+8, Asia/Hong_Kong)
+- **Format:** `YYYY-MM-DD HH:MM UTC / HH:MM HKT`
+
+**When to use:**
+- Session Date field: `**Date:** YYYY-MM-DD (Started: HH:MM UTC / HH:MM HKT)`
+- Session headers: `### Session N - YYYY-MM-DD HH:MM UTC / HH:MM HKT`
+- Menu display: `Current Time: HH:MM UTC / HH:MM HKT`
+- Context exports: `*Generated: YYYY-MM-DD HH:MM UTC / HH:MM HKT*`
+- Resume display: `Last Active: YYYY-MM-DD HH:MM UTC / HH:MM HKT`
+
+**Commands for timestamps:**
+```bash
+# Get both timezones
+date -u '+%Y-%m-%d %H:%M UTC'; TZ='Asia/Hong_Kong' date '+%H:%M HKT'
+
+# Combined format
+date -u '+%Y-%m-%d %H:%M UTC' | tr '\n' ' '; echo "/ $(TZ='Asia/Hong_Kong' date '+%H:%M HKT')"
+```
+
+---
+
 ## Workspace Requirements
 
 This skill operates on the current workspace (detected via CLAUDE.md). Required structure:
@@ -21,9 +47,10 @@ This skill operates on the current workspace (detected via CLAUDE.md). Required 
 | Directory | Required | Purpose |
 |-----------|----------|---------|
 | `in-progress/session-logs-plans/` | Yes | Active sessions |
-| `archive/plans/` | Yes | Completed sessions |
+| `archive/sessions/` | Yes | Completed session logs |
+| `archive/plans/` | Yes | Completed plans (PLAN.md) |
 
-**If missing directories:** Run `mkdir -p in-progress/session-logs-plans archive/plans`
+**If missing directories:** Run `mkdir -p in-progress/session-logs-plans archive/sessions archive/plans`
 
 ---
 
@@ -92,11 +119,16 @@ dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.m
 
 When `/session` is invoked without arguments, display this menu.
 
-**First, gather data:**
+**First, check INDEX.md freshness.** If INDEX.md is missing or last modified >24 hours ago, regenerate it (see INDEX.md section) before displaying the menu.
+
+**Then, gather data:**
 
 ```bash
 # Detect workspace (required - each Bash call is a new shell)
 dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
+
+# Get current time in UTC and Hong Kong
+date -u '+UTC: %Y-%m-%d %H:%M:%S'; TZ='Asia/Hong_Kong' date '+HKT: %Y-%m-%d %H:%M:%S'
 
 # List sessions with modification times
 for f in "$WORKSPACE_ROOT/in-progress/session-logs-plans"/*.md; do
@@ -110,6 +142,7 @@ done | sort -r
 ==================================================
  SESSION MANAGER
 ==================================================
+ Current Time: <UTC time> / <HKT time>
 
  ACTIVE SESSIONS (<count>)
 ------------------------------------------------------
@@ -139,7 +172,10 @@ done | sort -r
  CREATE
 ------------------------------------------------------
    n. New Session   -> Create new session log
-   p. New Plan      -> Create new plan document
+
+ PROJECT MANAGEMENT
+------------------------------------------------------
+   p. Plan          -> View/manage PLAN.md
 
  VIEW
 ------------------------------------------------------
@@ -165,7 +201,13 @@ Select session [1-N] or action:
  GET STARTED
 ------------------------------------------------------
    n. New Session   -> Create new session log
-   p. New Plan      -> Create new plan document
+
+ PROJECT MANAGEMENT
+------------------------------------------------------
+   p. Plan          -> View/manage PLAN.md
+
+ VIEW
+------------------------------------------------------
    a. Archive       -> Browse archived sessions
 
    q. Quit
@@ -180,7 +222,11 @@ Select session [1-N] or action:
 |---------|--------|
 | `/session` | Main menu |
 | `/session new` | Create new session log |
-| `/session plan` | Create new plan |
+| `/session plan` | View/manage PLAN.md |
+| `/session plan new` | Create PLAN.md with merged template |
+| `/session plan add <task>` | Add task to plan |
+| `/session plan update <task>` | Update task status (🟥→🟨→🟩) |
+| `/session plan complete` | Archive PLAN.md when all tasks 🟩 |
 | `/session resume` | Resume with context display |
 | `/session update` | Update active session with progress |
 | `/session update auto` | Auto-capture recent work |
@@ -190,7 +236,60 @@ Select session [1-N] or action:
 | `/session tag <agent> <feature>` | Update session tags |
 | `/session list` | List all sessions in progress |
 | `/session rollup` | View work by agent/feature |
-| `/session complete` | Mark done + auto-archive |
+| `/session complete` | Mark session done + auto-archive |
+
+---
+
+## INDEX.md - Session Directory Index
+
+An auto-generated index file that provides a scannable summary of all sessions in `in-progress/session-logs-plans/`.
+
+**File location:** `$WORKSPACE_ROOT/in-progress/session-logs-plans/INDEX.md`
+
+### When to Regenerate
+
+Regenerate INDEX.md whenever:
+- A new session is created (`/session new`)
+- A session is completed and archived (`/session complete`)
+- The main menu is displayed (`/session`) — if INDEX.md is missing or stale (>24h old)
+
+### Regeneration Logic
+
+```bash
+# Detect workspace
+dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
+
+SESSION_DIR="$WORKSPACE_ROOT/in-progress/session-logs-plans"
+
+# List all .md files except INDEX.md, sorted by modification time (newest first)
+ls -t "$SESSION_DIR"/*.md 2>/dev/null | grep -v INDEX.md
+```
+
+For each file, extract:
+1. **Filename** (from the path)
+2. **Title** (from the `# Session Log:` or `# Plan:` H1 header)
+3. **Status** (from the `**Status:**` field)
+4. **Date** (from the `**Date:**` field or filename)
+5. **One-line summary** (from the `## Objective` section — first sentence only)
+
+### INDEX.md Format
+
+```markdown
+# Session Index
+
+*Auto-generated by /session skill. Last updated: YYYY-MM-DD HH:MM UTC / HH:MM HKT*
+
+| File | Title | Status | Date | Summary |
+|------|-------|--------|------|---------|
+| [session-2026-02-22-...](session-2026-02-22-...) | Website Link Audit | Active | 2026-02-22 | Full link audit of verifiedmetrics.com |
+| [plan-2026-01-13-...](plan-2026-01-13-...) | Posts Full Extraction | Paused | 2026-01-13 | Extract LinkedIn post data via Voyager API |
+```
+
+### Important
+
+- INDEX.md is **auto-generated** — never edit it manually
+- It only indexes files in `in-progress/session-logs-plans/`, not archived files
+- If a file has no Status field, show "Unknown"
 
 ---
 
@@ -218,12 +317,21 @@ Then prompt for:
 
 **Create file at:** `$WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-HH-MM-<kebab-title>.md`
 
+**After creating the file:** Regenerate INDEX.md (see [INDEX.md section](#indexmd---session-directory-index)).
+
 ### Session Log Template
+
+**IMPORTANT: Timezone Formatting**
+- All dates and times must include both UTC and Hong Kong time (UTC+8)
+- Format: `YYYY-MM-DD HH:MM UTC / HH:MM HKT`
+- Use `date -u` for UTC and `TZ='Asia/Hong_Kong' date` for Hong Kong time
+- Session header timestamps must show both timezones
+- Within-session timestamps can use local time notation `[HH:MM]` for brevity
 
 ```markdown
 # Session Log: <Title>
 
-**Date:** YYYY-MM-DD
+**Date:** YYYY-MM-DD (Started: HH:MM UTC / HH:MM HKT)
 **Status:** Active
 **Type:** <Feature|Debugging|Refactor|Investigation|General>
 **Agent:** <agent-name or "workspace">
@@ -244,9 +352,27 @@ Then prompt for:
 |------|------|
 | path | purpose |
 
+## Key Decisions
+
+| Decision | Choice | Rationale | Alternatives Considered |
+|----------|--------|-----------|------------------------|
+| <topic> | <what we chose> | <why> | <what we didn't choose> |
+
+## Open Questions
+
+- [ ] <question>
+
+## Current State
+
+**Working:** <items that are functioning>
+**In Progress:** <items being actively worked on>
+**Blocked:** <items blocked> (reason)
+
+---
+
 ## Session Timeline
 
-### Session 1 - YYYY-MM-DD HH:MM
+### Session 1 - YYYY-MM-DD HH:MM UTC / HH:MM HKT
 
 **Focus:** <what this session is about>
 
@@ -262,10 +388,6 @@ Then prompt for:
 #### Checkpoints
 - [HH:MM] <milestone>
 
-#### Questions & Answers
-- [HH:MM] Q: <question>
-  A: <answer>
-
 ---
 
 ## Summary (Auto-generated for Resume)
@@ -278,12 +400,6 @@ Then prompt for:
 
 ### Next Steps
 - <item>
-
-### Key Decisions Made
-- <decision>
-
-### Open Questions
-- <question>
 ```
 
 ### Template-Specific Sections
@@ -381,39 +497,93 @@ Then prompt for:
 
 ---
 
-## `/session plan` - Create Plan
+## `/session plan` - Manage Project Plan
 
-Similar to session but for standalone plans:
+Manage the project's PLAN.md file. Each project has a single PLAN.md for tracking implementation tasks.
 
-**Create file at:** `$WORKSPACE_ROOT/in-progress/session-logs-plans/plan-YYYY-MM-DD-<kebab-title>.md`
+**File location:** `$WORKSPACE_ROOT/PLAN.md`
+
+### Subcommands
+
+| Command | Action |
+|---------|--------|
+| `/session plan` | View PLAN.md status and menu |
+| `/session plan new` | Create PLAN.md with template |
+| `/session plan add <task>` | Add task to plan |
+| `/session plan update <task>` | Update task status |
+| `/session plan complete` | Archive when all tasks done |
+
+### `/session plan` - View Plan
+
+Display the plan status:
+
+```
+==================================================
+ PROJECT PLAN
+==================================================
+ File: $WORKSPACE_ROOT/PLAN.md
+ Overall Progress: 45% (5/11 tasks)
+
+ TASKS
+------------------------------------------------------
+ 🟩 Step 1: Setup project structure
+ 🟨 Step 2: Implement core features
+    🟩 Add authentication
+    🟨 Add user dashboard
+    🟥 Add settings page
+ 🟥 Step 3: Testing & Documentation
+
+------------------------------------------------------
+ ACTIONS
+   a. Add task      -> Add new task to plan
+   u. Update task   -> Change task status
+   c. Complete      -> Archive plan (all tasks must be 🟩)
+
+   b. Back to main menu
+------------------------------------------------------
+```
+
+### `/session plan new` - Create Plan
+
+Prompt for:
+1. **Title**: Brief descriptive name
+2. **TLDR**: 2-3 sentences describing what we're building and why
+3. **Agent**: Which agent this relates to (or "workspace")
+4. **Feature**: Feature tag for grouping
+
+**Create file at:** `$WORKSPACE_ROOT/PLAN.md`
 
 ### Plan Template
 
 ```markdown
 # Plan: <Title>
 
-**Date:** YYYY-MM-DD
+**Overall Progress:** `0%`
+**Date:** YYYY-MM-DD (Created: HH:MM UTC / HH:MM HKT)
 **Status:** Planning
 **Agent:** <agent-name or "workspace">
 **Feature:** <feature-tag>
 
-## Objective
+## TLDR
 
-<What this plan achieves>
+<2-3 sentences: what we're building and why>
 
-## Context
+## Supporting Documents
 
-<Background information>
+| Type | Link/Path | Notes |
+|------|-----------|-------|
+| Linear Issue | <url or "none"> | <brief description> |
+| Exploration Doc | <path or "none"> | <what was discovered> |
+| Design Doc | <path/url or "none"> | <key decisions> |
+| Other | <reference or "none"> | <relevance> |
 
-## Proposed Solution
+## Critical Decisions
 
-<Approach description>
+Key choices made during exploration:
 
-## Implementation Steps
-
-1. [ ] Step 1
-2. [ ] Step 2
-3. [ ] Step 3
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| <topic> | <choice> | <why> |
 
 ## Key Files
 
@@ -421,19 +591,86 @@ Similar to session but for standalone plans:
 |------|--------|---------|
 | path | create/modify | description |
 
+## Tasks
+
+- [ ] 🟥 **Step 1: <Name>**
+  - [ ] 🟥 Subtask 1
+  - [ ] 🟥 Subtask 2
+
+- [ ] 🟥 **Step 2: <Name>**
+  - [ ] 🟥 Subtask 1
+
 ## Open Questions
 
-- <question>
+- [ ] <question>
+```
 
-## Risks & Considerations
+### Status Indicators
 
-- <risk>
+| Emoji | Meaning | When to Use |
+|-------|---------|-------------|
+| 🟩 | Done | Task completed |
+| 🟨 | In Progress | Currently working on |
+| 🟥 | To Do | Not started |
 
-## Progress Log
+### `/session plan add <task>` - Add Task
 
-| Time | Action | Result |
-|------|--------|--------|
-| - | Plan created | Awaiting approval |
+Add a new task to the plan. Prompts for:
+1. **Task name**: Brief description
+2. **Parent task**: (optional) Add as subtask under existing task
+3. **Initial status**: Usually 🟥 To Do
+
+Appends to the Tasks section in PLAN.md.
+
+### `/session plan update <task>` - Update Status
+
+Update a task's status. Prompts for:
+1. **Task to update**: Select from list or search
+2. **New status**: 🟥 To Do, 🟨 In Progress, or 🟩 Done
+
+Also updates:
+- The checkbox: `[ ]` → `[x]` when marking 🟩
+- **Overall Progress:** percentage at top of file
+
+### Progress Calculation
+
+```
+Total tasks = count all lines matching "- [ ]" or "- [x]" with emoji
+Done tasks = count lines with 🟩
+Progress = (Done / Total) * 100
+```
+
+### `/session plan complete` - Archive Plan
+
+**Requires all tasks to be 🟩 Done.**
+
+If incomplete tasks exist:
+```
+PLAN COMPLETION BLOCKED
+==================================================
+ ⚠ Cannot complete - unfinished tasks
+
+ INCOMPLETE TASKS
+------------------------------------------------------
+ 🟨 Step 2: Implement core features
+    🟥 Add settings page
+ 🟥 Step 3: Testing & Documentation
+
+------------------------------------------------------
+ Options:
+   [f] Force complete (mark incomplete as [DEFERRED])
+   [u] Update tasks first
+   [c] Cancel
+------------------------------------------------------
+```
+
+If all tasks complete:
+1. Update status to `Complete`
+2. Move to `$WORKSPACE_ROOT/archive/plans/PLAN-YYYY-MM-DD.md`
+3. Display confirmation
+
+```bash
+mv "$WORKSPACE_ROOT/PLAN.md" "$WORKSPACE_ROOT/archive/plans/PLAN-$(date +%Y-%m-%d).md"
 ```
 
 ---
@@ -487,8 +724,16 @@ Select [1-8] or [b]:
 
 ### Append Format
 
-When logging, append to the appropriate section with timestamp:
+When logging, append to the appropriate section with timestamp.
 
+**For new session entries**, use full timezone format:
+```markdown
+### Session N - YYYY-MM-DD HH:MM UTC / HH:MM HKT
+
+**Focus:** <what this session is about>
+```
+
+**For items within a session**, use brief time notation:
 ```markdown
 #### Discoveries
 - [HH:MM] <new discovery>
@@ -506,6 +751,52 @@ When logging, append to the appropriate section with timestamp:
 - [HH:MM] Q: <question>
   A: <answer>
 ```
+
+### Enhanced Decision Updates
+
+When logging a decision (`/session update decision`), capture full context:
+
+1. **Prompt for details:**
+   - Decision topic: What was decided?
+   - Choice made: What did we choose?
+   - Rationale: Why did we choose this?
+   - Alternatives considered: What did we NOT choose and why?
+
+2. **Update two locations:**
+   - **Key Decisions table** (top of session): Add row with full context
+   - **Session Timeline > Decisions**: Add timestamped entry
+
+**Quick syntax:**
+```
+/session update decision "Auth method" "JWT tokens" "Stateless, works with microservices" "Sessions (requires state), OAuth (overkill)"
+```
+
+### Enhanced Question Updates
+
+When logging a question (`/session update question`), track resolution:
+
+1. **Add to Open Questions section** as checkbox item: `- [ ] <question>`
+2. **When question is answered**, mark resolved: `- [x] <question> → <answer>`
+
+**Quick syntax:**
+```
+/session update question "Should we use Redis for caching?"
+/session update question resolve "Should we use Redis?" "Yes, for session storage"
+```
+
+### State Updates
+
+New update type for tracking current state:
+
+```
+/session update state working "Auth flow, API endpoints"
+/session update state progress "User dashboard"
+/session update state blocked "Rate limiting" "Waiting for API quota reset"
+```
+
+Updates the **Current State** section at top of session.
+
+---
 
 ### Auto-Capture Mode (`/session update auto`)
 
@@ -544,7 +835,7 @@ Read the selected session and display structured summary:
  SESSION RESUME: <Title>
 ==================================================
 
- Last Active: YYYY-MM-DD HH:MM (X hours ago)
+ Last Active: YYYY-MM-DD HH:MM UTC / HH:MM HKT (X hours ago)
  Status: <status>
  Agent: <agent>
  Feature: <feature>
@@ -630,8 +921,23 @@ Generate a portable context file for new windows:
 
 - <question>
 
+## Handoff Notes
+
+### Where We Are
+<Current state summary - what's working, what's not>
+
+### Critical Context
+<What the next person/Claude needs to know that isn't obvious from the code>
+
+### Recommended Approach
+1. <First thing to do when resuming>
+2. <Second step>
+
+### Gotchas
+- <Known issues or tricky areas to watch out for>
+
 ---
-*Generated: YYYY-MM-DD HH:MM*
+*Generated: YYYY-MM-DD HH:MM UTC / HH:MM HKT*
 *Source: $WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-<name>.md*
 ```
 
@@ -693,11 +999,13 @@ Select [1-2]:
 Then proceed with archival:
    - Update status to selected value in session file
    - Update the Summary section with final state
-   - Move file to `$WORKSPACE_ROOT/archive/plans/`
+   - Move file to `$WORKSPACE_ROOT/archive/sessions/`
 
 ```bash
-mv "$WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-name.md" "$WORKSPACE_ROOT/archive/plans/"
+mv "$WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-name.md" "$WORKSPACE_ROOT/archive/sessions/"
 ```
+
+4. **Regenerate INDEX.md** (see INDEX.md section)
 
 Display confirmation:
 
@@ -706,7 +1014,8 @@ SESSION COMPLETED
 ==================================================
  [x] All phases verified complete
  [x] Status updated to Complete
- [x] Moved to archive/plans/session-YYYY-MM-DD-name.md
+ [x] Moved to archive/sessions/session-YYYY-MM-DD-name.md
+ [x] INDEX.md regenerated
 
  Session Summary:
  - Duration: X days
@@ -768,7 +1077,8 @@ SESSION ROLLUP
 |---------|------|
 | Active sessions/plans | `$WORKSPACE_ROOT/in-progress/session-logs-plans/` |
 | Context exports | `$WORKSPACE_ROOT/in-progress/session-logs-plans/session-context-*.md` |
-| Archived sessions | `$WORKSPACE_ROOT/archive/plans/` |
+| Archived sessions | `$WORKSPACE_ROOT/archive/sessions/` |
+| Archived plans | `$WORKSPACE_ROOT/archive/plans/` |
 
 ---
 
@@ -777,7 +1087,8 @@ SESSION ROLLUP
 | Type | Pattern |
 |------|---------|
 | Session log | `session-YYYY-MM-DD-HH-MM-<kebab-title>.md` |
-| Plan | `plan-YYYY-MM-DD-HH-MM-<kebab-title>.md` |
+| Project plan | `PLAN.md` (one per project) |
+| Archived plan | `PLAN-YYYY-MM-DD.md` |
 | Context export | `session-context-<kebab-title>.md` |
 
 ---
