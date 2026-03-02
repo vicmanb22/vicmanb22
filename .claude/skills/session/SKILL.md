@@ -46,9 +46,11 @@ This skill operates on the current workspace (detected via CLAUDE.md). Required 
 
 | Directory | Required | Purpose |
 |-----------|----------|---------|
-| `in-progress/session-logs-plans/` | Yes | Active sessions |
+| `in-progress/` | Yes | Parent for all active session/plan subdirectories |
 | `archive/sessions/` | Yes | Completed session logs |
 | `archive/plans/` | Yes | Completed plans (PLAN.md) |
+
+**Session scanning:** The skill scans **all subdirectories** under `in-progress/` for files matching `session-*.md` or `plan-*.md`. This automatically discovers sessions in any subdirectory (e.g., `session-logs-plans/`, `marketing-sessions/`, `marketing-plans/`). Files that don't match these patterns (e.g., daily reports, reviews, explorations) are ignored.
 
 **If missing directories:** Run `mkdir -p in-progress/session-logs-plans archive/sessions archive/plans`
 
@@ -66,10 +68,11 @@ Use these standard statuses consistently across all session logs and plans:
 | `Complete` | Work finished, may need testing | archive/ |
 | `Production` | Tested, stable, in regular use | archive/ |
 | `Deprecated` | Superseded by newer work | archive/ |
+| `Cancelled` | Work abandoned, no longer pursuing | archive/ |
 
 **Rules:**
 - Files in `in-progress/` should have status: `Planning`, `Active`, or `Paused`
-- Files in `archive/` should have status: `Complete`, `Production`, or `Deprecated`
+- Files in `archive/` should have status: `Complete`, `Production`, `Deprecated`, or `Cancelled`
 - When archiving, update status before moving the file
 
 ---
@@ -123,20 +126,36 @@ When `/session` is invoked without arguments, display this menu.
 
 **Then, gather data:**
 
+Scan **all workspaces** under the common parent directory (`$WORKSPACE_ROOT/..`) that have a `CLAUDE.md` and an `in-progress/` directory. Within each workspace, scan **all subdirectories** of `in-progress/` for files matching `session-*.md` or `plan-*.md`. Group sessions by workspace.
+
 ```bash
 # Detect workspace (required - each Bash call is a new shell)
 dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
 
+PARENT_DIR="$(dirname "$WORKSPACE_ROOT")"
+
 # Get current time in UTC and Hong Kong
 date -u '+UTC: %Y-%m-%d %H:%M:%S'; TZ='Asia/Hong_Kong' date '+HKT: %Y-%m-%d %H:%M:%S'
 
-# List sessions with modification times
-for f in "$WORKSPACE_ROOT/in-progress/session-logs-plans"/*.md; do
-  [ -f "$f" ] && stat -f "%Sm|%N" -t "%Y-%m-%d %H:%M" "$f" 2>/dev/null
-done | sort -r
+# Scan all sibling workspaces for sessions across all in-progress subdirectories
+for wsdir in "$PARENT_DIR"/*/; do
+  ws="$(basename "$wsdir")"
+  [ -f "$wsdir/CLAUDE.md" ] || continue
+  [ -d "$wsdir/in-progress" ] || continue
+  for subdir in "$wsdir"/in-progress/*/; do
+    [ -d "$subdir" ] || continue
+    for f in "$subdir"/session-*.md "$subdir"/plan-*.md; do
+      [ -f "$f" ] || continue
+      mod=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M" "$f" 2>/dev/null)
+      echo "$ws|$mod|$f"
+    done
+  done
+done | sort -t'|' -k2 -r
 ```
 
-**Then display:**
+For each session file, extract **Status**, **Agent**, and **Feature** from the header fields (first 15 lines).
+
+**Then display, grouped by workspace (current workspace first):**
 
 ```
 ==================================================
@@ -144,18 +163,27 @@ done | sort -r
 ==================================================
  Current Time: <UTC time> / <HKT time>
 
- ACTIVE SESSIONS (<count>)
+ ACTIVE SESSIONS (<total count>)
 ------------------------------------------------------
- [1] session-2026-01-11-feature-name.md  *
-     Status: Active | Agent: <agent> | Feature: <feature>
+
+ personal-life (<count>)
+ ······················································
+ [1] session-2026-01-16-cloudview-vm-goals-review.md  *
+     Status: Active | Agent: planning/goals-coach
      Last updated: <relative time>
 
- [2] plan-2026-01-10-other-work.md
-     Status: Planning | Agent: <agent> | Feature: <feature>
+ work-verifiedmetrics (<count>)
+ ······················································
+ [2] session-2026-02-27-morning-workflow.md
+     Dir: session-logs-plans | Status: Active | Agent: workspace
      Last updated: <relative time>
 
- [3] session-2026-01-09-paused-work.md
-     Status: Paused | Agent: <agent> | Feature: <feature>
+ [3] session-2026-02-22-marketing-scorecards.md
+     Dir: marketing-sessions | Status: Active | Agent: marketing-reports
+     Last updated: <relative time>
+
+ [4] session-2026-02-26-vm-linear-workflow.md
+     Dir: session-logs-plans | Status: Active | Feature: linear-integration
      Last updated: <relative time>
 
 ------------------------------------------------------
@@ -168,6 +196,7 @@ done | sort -r
    c. Checkpoint    -> Mark milestone reached
    x. Export        -> Generate context file
    d. Complete      -> Mark done + auto-archive
+   k. Cancel        -> Abandon session + archive
 
  CREATE
 ------------------------------------------------------
@@ -187,6 +216,8 @@ done | sort -r
 Select session [1-N] or action:
 ```
 
+**Workspace ordering:** Current workspace appears first, then remaining workspaces alphabetically. Sessions within each workspace are sorted by last-modified (newest first). Workspaces with zero active sessions are omitted.
+
 **If no active sessions:**
 
 ```
@@ -196,7 +227,7 @@ Select session [1-N] or action:
 
  NO ACTIVE SESSIONS
 ------------------------------------------------------
- No session logs found in in-progress/session-logs-plans/
+ No session or plan files found in any in-progress/ subdirectory
 
  GET STARTED
 ------------------------------------------------------
@@ -236,13 +267,14 @@ Select session [1-N] or action:
 | `/session tag <agent> <feature>` | Update session tags |
 | `/session list` | List all sessions in progress |
 | `/session rollup` | View work by agent/feature |
+| `/session cancel` | Abandon session + archive as Cancelled |
 | `/session complete` | Mark session done + auto-archive |
 
 ---
 
 ## INDEX.md - Session Directory Index
 
-An auto-generated index file that provides a scannable summary of all sessions in `in-progress/session-logs-plans/`.
+An auto-generated index file that provides a scannable summary of all sessions across all `in-progress/` subdirectories.
 
 **File location:** `$WORKSPACE_ROOT/in-progress/session-logs-plans/INDEX.md`
 
@@ -259,10 +291,8 @@ Regenerate INDEX.md whenever:
 # Detect workspace
 dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
 
-SESSION_DIR="$WORKSPACE_ROOT/in-progress/session-logs-plans"
-
-# List all .md files except INDEX.md, sorted by modification time (newest first)
-ls -t "$SESSION_DIR"/*.md 2>/dev/null | grep -v INDEX.md
+# Find all session/plan files across all in-progress subdirectories, sorted by modification time
+find "$WORKSPACE_ROOT/in-progress" -mindepth 2 -maxdepth 2 \( -name "session-*.md" -o -name "plan-*.md" \) -exec stat -f "%m %N" {} \; 2>/dev/null | sort -rn | awk '{print $2}'
 ```
 
 For each file, extract:
@@ -279,16 +309,18 @@ For each file, extract:
 
 *Auto-generated by /session skill. Last updated: YYYY-MM-DD HH:MM UTC / HH:MM HKT*
 
-| File | Title | Status | Date | Summary |
-|------|-------|--------|------|---------|
-| [session-2026-02-22-...](session-2026-02-22-...) | Website Link Audit | Active | 2026-02-22 | Full link audit of verifiedmetrics.com |
-| [plan-2026-01-13-...](plan-2026-01-13-...) | Posts Full Extraction | Paused | 2026-01-13 | Extract LinkedIn post data via Voyager API |
+| File | Directory | Title | Status | Date | Summary |
+|------|-----------|-------|--------|------|---------|
+| session-2026-02-22-... | marketing-sessions | Marketing Scorecards | Active | 2026-02-22 | Fix scorecard bugs and data accuracy |
+| plan-2026-02-27-... | session-logs-plans | Post Analytics | Planning | 2026-02-27 | Finish post analytics, lifecycle report |
+| session-2026-02-26-... | session-logs-plans | Linear Workflow | Active | 2026-02-26 | Build VM work tracking in Linear |
 ```
 
 ### Important
 
 - INDEX.md is **auto-generated** — never edit it manually
-- It only indexes files in `in-progress/session-logs-plans/`, not archived files
+- It indexes `session-*.md` and `plan-*.md` files across **all** `in-progress/` subdirectories, not just `session-logs-plans/`
+- The Directory column shows which subdirectory the file lives in (for disambiguation)
 - If a file has no Status field, show "Unknown"
 
 ---
@@ -314,8 +346,40 @@ Then prompt for:
 2. **Objective**: What this session will accomplish
 3. **Agent**: Which agent this relates to (or "workspace")
 4. **Feature**: Feature tag for grouping
+5. **Linear Issue** (optional): Linear issue identifier (e.g., MAR-152) or "none"
 
-**Create file at:** `$WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-HH-MM-<kebab-title>.md`
+### Linear Issue Validation
+
+If user provides a Linear identifier (not "none" or blank):
+
+1. **Fetch the issue** to validate it exists and get the URL:
+
+```bash
+dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
+
+export $(grep -v '^#' /Users/vic-gini/claude-agents/work-verifiedmetrics/.env | xargs)
+
+IDENTIFIER="<user-input>"
+
+curl -s --max-time 10 -X POST https://api.linear.app/graphql \
+  -H "Content-Type: application/json" \
+  -H "Authorization: $LINEAR_API_KEY" \
+  -d "{\"query\": \"{ issue(id: \\\"$IDENTIFIER\\\") { id identifier title url } }\"}"
+```
+
+**Note:** The `issue(id:)` query accepts both human-readable identifiers (e.g., `MAR-136`) and UUIDs.
+
+2. **If issue found** (response has `.data.issue` with non-null id): Populate `**Linear Issue:** <identifier> (<url>)` in the session file
+3. **If not found or API error**: Show warning, ask "Continue without Linear link? [y/n]". If yes, use `*none*`
+4. **If blank or "none"**: Use `*none*`
+
+**Create file at:** `$WORKSPACE_ROOT/in-progress/<target-subdir>/session-YYYY-MM-DD-HH-MM-<kebab-title>.md`
+
+**Target subdirectory selection:** When creating a new session, determine the appropriate subdirectory based on the agent:
+- If agent starts with `marketing` or relates to LinkedIn/content/engagement → `marketing-sessions/`
+- Otherwise → `session-logs-plans/`
+
+The user can override this by specifying a directory explicitly.
 
 **After creating the file:** Regenerate INDEX.md (see [INDEX.md section](#indexmd---session-directory-index)).
 
@@ -337,6 +401,7 @@ Then prompt for:
 **Agent:** <agent-name or "workspace">
 **Feature:** <feature-tag>
 **Scope:** <planning|implementation|debugging|refactoring>
+**Linear Issue:** <identifier> (<url>) | *none*
 
 ## Objective
 
@@ -839,6 +904,7 @@ Read the selected session and display structured summary:
  Status: <status>
  Agent: <agent>
  Feature: <feature>
+ Linear: <identifier> (<url>)    # only show if linked
 
  OBJECTIVE
 ------------------------------------------------------
@@ -878,7 +944,7 @@ Read the selected session and display structured summary:
 
 Generate a portable context file for new windows:
 
-**Create file at:** `$WORKSPACE_ROOT/in-progress/session-logs-plans/session-context-<name>.md`
+**Create file at:** Same subdirectory as the source session file (e.g., `$WORKSPACE_ROOT/in-progress/marketing-sessions/session-context-<name>.md`)
 
 ```markdown
 # Session Context: <Title>
@@ -889,6 +955,8 @@ Generate a portable context file for new windows:
 ## Quick Summary
 
 <2-3 sentences summarizing the work>
+
+**Linear Issue:** <identifier> (<url>) | *none*
 
 ## Objective
 
@@ -938,7 +1006,49 @@ Generate a portable context file for new windows:
 
 ---
 *Generated: YYYY-MM-DD HH:MM UTC / HH:MM HKT*
-*Source: $WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-<name>.md*
+*Source: $WORKSPACE_ROOT/in-progress/<subdir>/session-YYYY-MM-DD-<name>.md*
+```
+
+---
+
+## `/session cancel` - Abandon Session
+
+Cancel a session that is no longer being pursued. Unlike `/session complete`, this does NOT enforce phase completion.
+
+1. **Confirm cancellation:**
+
+```
+SESSION CANCEL
+==================================================
+ Cancel: <session-filename>
+ Status: <current-status>
+
+ Are you sure you want to cancel this session?
+ All incomplete items will be marked [CANCELLED].
+------------------------------------------------------
+   [y] Yes, cancel and archive
+   [n] No, go back
+------------------------------------------------------
+```
+
+2. **On confirmation:**
+   - Update `**Status:**` to `Cancelled`
+   - Mark all unchecked items (`- [ ]`) with `[CANCELLED]` suffix
+   - If session has a Linear issue linked, create a cancellation document (same as complete flow, but with `**Status:** Cancelled` and a note: `Session cancelled — work abandoned.`)
+   - Move file to `$WORKSPACE_ROOT/archive/sessions/`
+   - Regenerate INDEX.md
+
+3. **Display confirmation:**
+
+```
+SESSION CANCELLED
+==================================================
+ [x] Status updated to Cancelled
+ [x] Incomplete items marked [CANCELLED]
+ [x] Moved to archive/sessions/<filename>
+ [x] INDEX.md regenerated
+
+==================================================
 ```
 
 ---
@@ -996,13 +1106,86 @@ What status should this session have?
 Select [1-2]:
 ```
 
+### Linear Document Sync (on close)
+
+**Before archival**, check if the session has a Linear issue linked:
+
+1. **Read the session file** and look for `**Linear Issue:**` field
+2. **If `*none*` or field is missing** — skip this step entirely, proceed to archival
+3. **If a Linear identifier is present** (e.g., `MAR-152`):
+
+   a. **Extract the Summary section** from the session file — everything between `## Summary (Auto-generated for Resume)` and the next `---` or end of file. This includes `### Completed`, `### In Progress`, and `### Next Steps` subsections.
+
+   b. **Look up the internal UUID** from the identifier:
+
+   ```bash
+   dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.md" ] && WORKSPACE_ROOT="$dir" && break; dir="$(dirname "$dir")"; done; [ -z "$WORKSPACE_ROOT" ] && echo "ERROR: No CLAUDE.md" && exit 1
+
+   export $(grep -v '^#' /Users/vic-gini/claude-agents/work-verifiedmetrics/.env | xargs)
+
+   IDENTIFIER="<extracted-from-session>"
+
+   RESPONSE=$(curl -s --max-time 10 -X POST https://api.linear.app/graphql \
+     -H "Content-Type: application/json" \
+     -H "Authorization: $LINEAR_API_KEY" \
+     -d "{\"query\": \"{ issue(id: \\\"$IDENTIFIER\\\") { id identifier title url } }\"}")
+
+   ISSUE_ID=$(echo "$RESPONSE" | jq -r '.data.issue.id')
+   ```
+
+   **Note:** `issue(id:)` accepts both human-readable identifiers (e.g., `MAR-136`) and UUIDs.
+
+   c. **Format the document content** — session summary with metadata:
+
+   ```markdown
+   **Date:** <session-date> | **Duration:** <X days> | **Status:** <Complete|Production>
+
+   ### Completed
+   - <items from Summary>
+
+   ### In Progress
+   - <items from Summary>
+
+   ### Next Steps
+   - <items from Summary>
+   ```
+
+   d. **Create the document** linked to the issue using `jq` + GraphQL variables for safe JSON escaping:
+
+   ```bash
+   # Write document content to temp file
+   cat > /tmp/linear-doc-content.txt << 'CONTENT_EOF'
+   <formatted content from step c>
+   CONTENT_EOF
+
+   # Build JSON payload with proper escaping using jq
+   jq -n \
+     --arg title "Session Log: <session-title>" \
+     --arg issueId "$ISSUE_ID" \
+     --rawfile content /tmp/linear-doc-content.txt \
+     '{query: "mutation($title: String!, $content: String, $issueId: String) { documentCreate(input: { title: $title, content: $content, issueId: $issueId }) { success document { id title url } } }", variables: {title: $title, content: $content, issueId: $issueId}}' \
+     > /tmp/linear-doc-payload.json
+
+   curl -s --max-time 10 -X POST https://api.linear.app/graphql \
+     -H "Content-Type: application/json" \
+     -H "Authorization: $LINEAR_API_KEY" \
+     -d @/tmp/linear-doc-payload.json
+
+   # Clean up temp files
+   rm -f /tmp/linear-doc-content.txt /tmp/linear-doc-payload.json
+   ```
+
+   e. **If the API call succeeds** — add a checkmark to the confirmation display
+   f. **If the API call fails** — show a warning but do NOT block archival. Display: `[!] Linear document failed: <error>. Session archived anyway.`
+
 Then proceed with archival:
    - Update status to selected value in session file
    - Update the Summary section with final state
    - Move file to `$WORKSPACE_ROOT/archive/sessions/`
 
 ```bash
-mv "$WORKSPACE_ROOT/in-progress/session-logs-plans/session-YYYY-MM-DD-name.md" "$WORKSPACE_ROOT/archive/sessions/"
+# Move from whichever in-progress subdirectory the session lives in
+mv "$WORKSPACE_ROOT/in-progress/<subdir>/session-YYYY-MM-DD-name.md" "$WORKSPACE_ROOT/archive/sessions/"
 ```
 
 4. **Regenerate INDEX.md** (see INDEX.md section)
@@ -1015,6 +1198,7 @@ SESSION COMPLETED
  [x] All phases verified complete
  [x] Status updated to Complete
  [x] Moved to archive/sessions/session-YYYY-MM-DD-name.md
+ [x] Session document created in Linear on <identifier>
  [x] INDEX.md regenerated
 
  Session Summary:
@@ -1026,6 +1210,11 @@ SESSION COMPLETED
 
 ==================================================
 ```
+
+**Linear line variants:**
+- Linked + success: `[x] Session document created in Linear on MAR-152`
+- Not linked: `[ ] No Linear issue linked — skipped document sync`
+- API failure: `[!] Linear document failed — session archived anyway`
 
 ### Force Complete Option
 
@@ -1075,8 +1264,11 @@ SESSION ROLLUP
 
 | Purpose | Path |
 |---------|------|
-| Active sessions/plans | `$WORKSPACE_ROOT/in-progress/session-logs-plans/` |
-| Context exports | `$WORKSPACE_ROOT/in-progress/session-logs-plans/session-context-*.md` |
+| Active sessions/plans | `$WORKSPACE_ROOT/in-progress/*/` (any subdirectory containing `session-*.md` or `plan-*.md`) |
+| Default session dir | `$WORKSPACE_ROOT/in-progress/session-logs-plans/` |
+| Marketing sessions | `$WORKSPACE_ROOT/in-progress/marketing-sessions/` |
+| Marketing plans | `$WORKSPACE_ROOT/in-progress/marketing-plans/` |
+| Context exports | Same subdirectory as the source session |
 | Archived sessions | `$WORKSPACE_ROOT/archive/sessions/` |
 | Archived plans | `$WORKSPACE_ROOT/archive/plans/` |
 
