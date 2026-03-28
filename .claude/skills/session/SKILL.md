@@ -48,11 +48,10 @@ This skill operates on the current workspace (detected via CLAUDE.md). Required 
 |-----------|----------|---------|
 | `in-progress/` | Yes | Parent for all active session/plan subdirectories |
 | `archive/sessions/` | Yes | Completed session logs |
-| `archive/plans/` | Yes | Completed plans (PLAN.md) |
 
 **Session scanning:** The skill scans **all subdirectories** under `in-progress/` for files matching `session-*.md` or `plan-*.md`. This automatically discovers sessions in any subdirectory (e.g., `session-logs-plans/`, `marketing-sessions/`, `marketing-plans/`). Files that don't match these patterns (e.g., daily reports, reviews, explorations) are ignored.
 
-**If missing directories:** Run `mkdir -p in-progress/session-logs-plans archive/sessions archive/plans`
+**If missing directories:** Run `mkdir -p in-progress/session-logs-plans archive/sessions`
 
 ---
 
@@ -122,6 +121,18 @@ dir="$(pwd)"; WORKSPACE_ROOT=""; while [ "$dir" != "/" ]; do [ -f "$dir/CLAUDE.m
 
 When `/session` is invoked without arguments, display this menu.
 
+### Menu Input Handling
+
+**CRITICAL: After displaying the menu, the user's next message IS a menu selection. Process it immediately — never ask for clarification.**
+
+Recognize these inputs:
+- **Numeric** (`1`–`N`): Select that session
+- **Single letter** (`u`, `s`, `c`, `x`, `d`, `k`, `n`, `p`, `r`, `o`, `q`): Execute that action
+- **`%`**: Sort toggle — re-sort by completion percentage (or revert to recency). This is NOT a typo or stray character; it is a deliberate menu action. Process it immediately by re-displaying the menu in the new sort order.
+- **`l`**, **`f`**: Spec actions (link spec, new from spec)
+
+If the input doesn't match any known action, say so briefly and re-show the menu — don't ask open-ended questions.
+
 **First, check INDEX.md freshness.** If INDEX.md is missing or last modified >24 hours ago, regenerate it (see INDEX.md section) before displaying the menu.
 
 **Then, gather data:**
@@ -155,6 +166,38 @@ done | sort -t'|' -k2 -r
 
 For each session file, extract **Status**, **Agent**, and **Feature** from the header fields (first 15 lines).
 
+**Then, calculate task progress** for each session file:
+
+For each file, count task items in the `## Tasks` and `## Remaining Work` sections. Tasks are lines matching `- [ ]` or `- [x]` with emoji markers (🟥, 🟨, 🟩) OR plain checkbox lines (`- [ ]`, `- [x]`) in those sections.
+
+```
+Total tasks = lines matching "- [ ]" or "- [x]" (with or without emoji)
+Done tasks = lines with 🟩 OR "- [x]" (without 🟥/🟨)
+Progress = (Done / Total) * 100, displayed as percentage
+```
+
+If a session has no tasks (0 total), omit the progress indicator for that entry.
+
+**Then scan for unlinked specs** in `.claude/plans/`:
+
+```bash
+# Find orphaned specs — .claude/plans/ files not referenced by any active session
+CLAUDE_PLANS="$WORKSPACE_ROOT/.claude/plans"
+if [ -d "$CLAUDE_PLANS" ]; then
+  for spec in "$CLAUDE_PLANS"/*.md; do
+    [ -f "$spec" ] || continue
+    specname="$(basename "$spec")"
+    # Search all active session/plan files for references to this spec
+    found=$(grep -rl "$specname" "$WORKSPACE_ROOT/in-progress/" 2>/dev/null | head -1)
+    if [ -z "$found" ]; then
+      mod=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M" "$spec" 2>/dev/null)
+      title=$(head -3 "$spec" | grep "^# " | head -1 | sed 's/^# //')
+      echo "SPEC|$mod|$specname|$title"
+    fi
+  done | sort -t'|' -k2 -r
+fi
+```
+
 **Then display, grouped by workspace (current workspace first):**
 
 ```
@@ -176,7 +219,7 @@ For each session file, extract **Status**, **Agent**, and **Feature** from the h
  ······················································
  [2] session-2026-02-27-morning-workflow.md
      Dir: session-logs-plans | Status: Active | Agent: workspace
-     Last updated: <relative time>
+     Progress: 60% (3/5) | Last updated: <relative time>
 
  [3] session-2026-02-22-marketing-scorecards.md
      Dir: marketing-sessions | Status: Active | Agent: marketing-reports
@@ -184,7 +227,22 @@ For each session file, extract **Status**, **Agent**, and **Feature** from the h
 
  [4] session-2026-02-26-vm-linear-workflow.md
      Dir: session-logs-plans | Status: Active | Feature: linear-integration
-     Last updated: <relative time>
+     Progress: 25% (1/4) | Last updated: <relative time>
+
+ UNLINKED SPECS (.claude/plans/)
+------------------------------------------------------
+ These spec files aren't linked to any active session.
+ Link to a session, or they'll be lost when context resets.
+
+ [s1] proud-herding-iverson.md
+      Linear Organization Redesign — Team Vic & Team Argonaut
+      Last modified: 1 day ago
+
+ [s2] polished-imagining-wall.md
+      Refine /weekly-digest Skill
+      Last modified: 1 day ago
+
+ ... (+N older specs)
 
 ------------------------------------------------------
  * = Currently selected session
@@ -204,12 +262,21 @@ For each session file, extract **Status**, **Agent**, and **Feature** from the h
 
  PROJECT MANAGEMENT
 ------------------------------------------------------
-   p. Plan          -> View/manage PLAN.md
+   p. Tasks         -> View task progress across sessions
+
+ SPECS
+------------------------------------------------------
+   l. Link spec     -> Link a spec to an existing session
+   f. New from spec -> Create session from spec
 
  VIEW
 ------------------------------------------------------
    r. Resume        -> Full context display for selected
    o. Rollup        -> View work by agent/feature
+
+ SORT
+------------------------------------------------------
+   %. Sort by progress  -> Re-sort by % complete (within groups)
 
    q. Quit
 ------------------------------------------------------
@@ -217,6 +284,18 @@ Select session [1-N] or action:
 ```
 
 **Workspace ordering:** Current workspace appears first, then remaining workspaces alphabetically. Sessions within each workspace are sorted by last-modified (newest first). Workspaces with zero active sessions are omitted.
+
+**Sort by progress (`%`):** When selected, re-display the menu with sessions sorted by task completion percentage (ascending — least complete first) within each workspace group. Sessions with no tasks are listed last. This is a display toggle — selecting `%` again reverts to the default last-modified sort.
+
+**Unlinked specs display rules:**
+- Only shown if orphaned specs exist (omit entire section otherwise)
+- Show the 5 most recently modified orphaned specs
+- If more exist, show `... (+N older specs)` with option to view all
+- Only scan `.claude/plans/` in the current workspace (not sibling workspaces)
+
+**Spec actions:**
+- `l` (link): Prompt for spec number `[s1-sN]` and session number `[1-N]`, then add `**Spec:** .claude/plans/<name>.md` to the session header
+- `f` (new from spec): Create a new session pre-populated with the spec's title and objective, with `**Spec:**` field set. Runs the `/session new` flow with pre-filled values.
 
 **If no active sessions:**
 
@@ -229,13 +308,17 @@ Select session [1-N] or action:
 ------------------------------------------------------
  No session or plan files found in any in-progress/ subdirectory
 
+ UNLINKED SPECS (.claude/plans/)
+------------------------------------------------------
+ [s1] <spec-name>.md
+      <Title>
+      Last modified: <relative time>
+ ...
+
  GET STARTED
 ------------------------------------------------------
    n. New Session   -> Create new session log
-
- PROJECT MANAGEMENT
-------------------------------------------------------
-   p. Plan          -> View/manage PLAN.md
+   f. New from spec -> Create session from spec
 
  VIEW
 ------------------------------------------------------
@@ -253,11 +336,8 @@ Select session [1-N] or action:
 |---------|--------|
 | `/session` | Main menu |
 | `/session new` | Create new session log |
-| `/session plan` | View/manage PLAN.md |
-| `/session plan new` | Create PLAN.md with merged template |
-| `/session plan add <task>` | Add task to plan |
-| `/session plan update <task>` | Update task status (🟥→🟨→🟩) |
-| `/session plan complete` | Archive PLAN.md when all tasks 🟩 |
+| `/session plan` | View task progress across all active sessions |
+| `/session plan update <task>` | Update task status in selected session (🟥→🟨→🟩) |
 | `/session resume` | Resume with context display |
 | `/session update` | Update active session with progress |
 | `/session update auto` | Auto-capture recent work |
@@ -347,6 +427,9 @@ Then prompt for:
 3. **Agent**: Which agent this relates to (or "workspace")
 4. **Feature**: Feature tag for grouping
 5. **Linear Issue** (optional): Linear issue identifier (e.g., MAR-152) or "none"
+6. **Spec file** (optional): Path to a `.claude/plans/` spec file, or "none"
+   - Auto-detect: if `.claude/plans/` files were recently modified (within last hour), suggest them
+   - If provided, populate `**Spec:**` field in the header
 
 ### Linear Issue Validation
 
@@ -402,6 +485,7 @@ The user can override this by specifying a directory explicitly.
 **Feature:** <feature-tag>
 **Scope:** <planning|implementation|debugging|refactoring>
 **Linear Issue:** <identifier> (<url>) | *none*
+**Spec:** `.claude/plans/<name>.md` | *none*
 
 ## Objective
 
@@ -416,6 +500,12 @@ The user can override this by specifying a directory explicitly.
 | File | Role |
 |------|------|
 | path | purpose |
+
+## Tasks
+
+<!-- Add tasks as work emerges. Use 🟥 (to do), 🟨 (in progress), 🟩 (done) -->
+
+- [ ] 🟥 <task>
 
 ## Key Decisions
 
@@ -469,7 +559,7 @@ The user can override this by specifying a directory explicitly.
 
 ### Template-Specific Sections
 
-**Feature Template** - Add after Key Files:
+**Feature Template** - Add after Key Files (replaces the base `## Tasks` section with a structured version):
 ```markdown
 ## Requirements
 
@@ -483,23 +573,23 @@ The user can override this by specifying a directory explicitly.
 
 - <dependency>
 
-## Phases
+## Tasks
 
-### Phase 1: Implementation
-- [ ] Core functionality
+- [ ] 🟥 **Step 1: Implementation**
+  - [ ] 🟥 Core functionality
 
-### Phase 2: Testing & Verification
-- [ ] Manual testing completed
-- [ ] Edge cases validated
+- [ ] 🟥 **Step 2: Testing & Verification**
+  - [ ] 🟥 Manual testing completed
+  - [ ] 🟥 Edge cases validated
 
-### Phase 3: Documentation & Cleanup
-- [ ] CLAUDE.md updated (if applicable)
-- [ ] No debug code remaining
+- [ ] 🟥 **Step 3: Documentation & Cleanup**
+  - [ ] 🟥 CLAUDE.md updated (if applicable)
+  - [ ] 🟥 No debug code remaining
 
 ## Definition of Done
 
 - [ ] All acceptance criteria met
-- [ ] All phases complete or explicitly [DEFERRED]
+- [ ] All tasks complete or explicitly [DEFERRED]
 - [ ] No open blockers
 ```
 
@@ -562,113 +652,66 @@ The user can override this by specifying a directory explicitly.
 
 ---
 
-## `/session plan` - Manage Project Plan
+## `/session plan` - Cross-Workstream Task Viewer
 
-Manage the project's PLAN.md file. Each project has a single PLAN.md for tracking implementation tasks.
-
-**File location:** `$WORKSPACE_ROOT/PLAN.md`
+View task progress across all active sessions. Tasks live inside each session's `## Tasks` section — there is no separate PLAN.md.
 
 ### Subcommands
 
 | Command | Action |
 |---------|--------|
-| `/session plan` | View PLAN.md status and menu |
-| `/session plan new` | Create PLAN.md with template |
-| `/session plan add <task>` | Add task to plan |
-| `/session plan update <task>` | Update task status |
-| `/session plan complete` | Archive when all tasks done |
+| `/session plan` | View task progress across all active sessions |
+| `/session plan update <task>` | Update task status in selected session (🟥→🟨→🟩) |
 
-### `/session plan` - View Plan
+### `/session plan` - View Tasks
 
-Display the plan status:
+Scan all active session/plan files across all workspaces for `## Tasks` sections. Display aggregated progress:
 
 ```
 ==================================================
- PROJECT PLAN
+ TASK OVERVIEW (across all active sessions)
 ==================================================
- File: $WORKSPACE_ROOT/PLAN.md
- Overall Progress: 45% (5/11 tasks)
 
- TASKS
+ personal-life (2 sessions with tasks)
+ ······················································
+ [1] plan-2026-03-08-letter-to-siew-ching.md
+     Progress: 0% (0/6)
+     🟥 Step 1: Draft letter structure
+     🟥 Step 2: Write opening section
+     ...
+
+ [2] session-2026-03-08-05-39-voice-integration.md
+     Progress: 60% (3/5)
+     🟩 Setup whisper-cli
+     🟩 TTS integration
+     🟩 Recording pipeline
+     🟨 End-to-end testing
+     🟥 VS Code hotkey binding
+
+ work-verifiedmetrics (1 session with tasks)
+ ······················································
+ [3] session-2026-03-10-outbound-outreach-sheet.md
+     Progress: 25% (1/4)
+     🟩 Create sheet template
+     🟥 Add data validation
+     🟥 Build sync script
+     🟥 Test end-to-end
+
 ------------------------------------------------------
- 🟩 Step 1: Setup project structure
- 🟨 Step 2: Implement core features
-    🟩 Add authentication
-    🟨 Add user dashboard
-    🟥 Add settings page
- 🟥 Step 3: Testing & Documentation
-
-------------------------------------------------------
- ACTIONS
-   a. Add task      -> Add new task to plan
-   u. Update task   -> Change task status
-   c. Complete      -> Archive plan (all tasks must be 🟩)
-
-   b. Back to main menu
+ Select [1-N] to update tasks, or [b] back
 ------------------------------------------------------
 ```
 
-### `/session plan new` - Create Plan
+**Only shows sessions that have a non-empty `## Tasks` section.** Sessions with only the placeholder comment are omitted.
 
-Prompt for:
-1. **Title**: Brief descriptive name
-2. **TLDR**: 2-3 sentences describing what we're building and why
-3. **Agent**: Which agent this relates to (or "workspace")
-4. **Feature**: Feature tag for grouping
+### `/session plan update <task>` - Update Task Status
 
-**Create file at:** `$WORKSPACE_ROOT/PLAN.md`
-
-### Plan Template
-
-```markdown
-# Plan: <Title>
-
-**Overall Progress:** `0%`
-**Date:** YYYY-MM-DD (Created: HH:MM UTC / HH:MM HKT)
-**Status:** Planning
-**Agent:** <agent-name or "workspace">
-**Feature:** <feature-tag>
-
-## TLDR
-
-<2-3 sentences: what we're building and why>
-
-## Supporting Documents
-
-| Type | Link/Path | Notes |
-|------|-----------|-------|
-| Linear Issue | <url or "none"> | <brief description> |
-| Exploration Doc | <path or "none"> | <what was discovered> |
-| Design Doc | <path/url or "none"> | <key decisions> |
-| Other | <reference or "none"> | <relevance> |
-
-## Critical Decisions
-
-Key choices made during exploration:
-
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| <topic> | <choice> | <why> |
-
-## Key Files
-
-| File | Action | Purpose |
-|------|--------|---------|
-| path | create/modify | description |
-
-## Tasks
-
-- [ ] 🟥 **Step 1: <Name>**
-  - [ ] 🟥 Subtask 1
-  - [ ] 🟥 Subtask 2
-
-- [ ] 🟥 **Step 2: <Name>**
-  - [ ] 🟥 Subtask 1
-
-## Open Questions
-
-- [ ] <question>
-```
+After selecting a session from the viewer:
+1. Display the session's tasks with numbered list
+2. Prompt for task number and new status: 🟥 To Do, 🟨 In Progress, or 🟩 Done
+3. Update the task line in the session file:
+   - Change emoji: 🟥 → 🟨 → 🟩
+   - Update checkbox: `[ ]` → `[x]` when marking 🟩
 
 ### Status Indicators
 
@@ -678,64 +721,12 @@ Key choices made during exploration:
 | 🟨 | In Progress | Currently working on |
 | 🟥 | To Do | Not started |
 
-### `/session plan add <task>` - Add Task
-
-Add a new task to the plan. Prompts for:
-1. **Task name**: Brief description
-2. **Parent task**: (optional) Add as subtask under existing task
-3. **Initial status**: Usually 🟥 To Do
-
-Appends to the Tasks section in PLAN.md.
-
-### `/session plan update <task>` - Update Status
-
-Update a task's status. Prompts for:
-1. **Task to update**: Select from list or search
-2. **New status**: 🟥 To Do, 🟨 In Progress, or 🟩 Done
-
-Also updates:
-- The checkbox: `[ ]` → `[x]` when marking 🟩
-- **Overall Progress:** percentage at top of file
-
 ### Progress Calculation
 
 ```
-Total tasks = count all lines matching "- [ ]" or "- [x]" with emoji
+Total tasks = count all lines matching "- [ ]" or "- [x]" with emoji (🟥, 🟨, or 🟩)
 Done tasks = count lines with 🟩
 Progress = (Done / Total) * 100
-```
-
-### `/session plan complete` - Archive Plan
-
-**Requires all tasks to be 🟩 Done.**
-
-If incomplete tasks exist:
-```
-PLAN COMPLETION BLOCKED
-==================================================
- ⚠ Cannot complete - unfinished tasks
-
- INCOMPLETE TASKS
-------------------------------------------------------
- 🟨 Step 2: Implement core features
-    🟥 Add settings page
- 🟥 Step 3: Testing & Documentation
-
-------------------------------------------------------
- Options:
-   [f] Force complete (mark incomplete as [DEFERRED])
-   [u] Update tasks first
-   [c] Cancel
-------------------------------------------------------
-```
-
-If all tasks complete:
-1. Update status to `Complete`
-2. Move to `$WORKSPACE_ROOT/archive/plans/PLAN-YYYY-MM-DD.md`
-3. Display confirmation
-
-```bash
-mv "$WORKSPACE_ROOT/PLAN.md" "$WORKSPACE_ROOT/archive/plans/PLAN-$(date +%Y-%m-%d).md"
 ```
 
 ---
@@ -1057,28 +1048,25 @@ SESSION CANCELLED
 
 **CRITICAL: Phase Completion Enforcement**
 
-Before marking a session complete, you MUST verify all phases are done:
+Before marking a session complete, you MUST verify all tasks are done:
 
-1. **Parse the session file** for phase markers:
-   - Look for `## Phases Remaining` or `### Phase N:` sections
-   - Look for unchecked items `- [ ]` in Implementation Steps, Acceptance Criteria, or Phases
+1. **Parse the session file** for task markers:
+   - Look for `## Tasks` section with unchecked items (`- [ ]` with 🟥 or 🟨)
+   - Look for unchecked items in Acceptance Criteria
    - Look for "In Progress" items in the Summary section
 
-2. **If incomplete phases exist**, display blocker:
+2. **If incomplete tasks exist**, display blocker:
 
 ```
 SESSION COMPLETION BLOCKED
 ==================================================
  ⚠ Cannot complete - unfinished work detected
 
- INCOMPLETE PHASES
+ INCOMPLETE TASKS
 ------------------------------------------------------
- [ ] Phase 2: Testing & Validation
-     - [ ] Test `/comms-org` with actual data
-     - [ ] Run full workflow
-
- [ ] Phase 3: Additional Features
-     - [ ] Add Slack task extraction
+ 🟨 Step 2: Implement core features
+    🟥 Add settings page
+ 🟥 Step 3: Testing & Documentation
 
  INCOMPLETE ACCEPTANCE CRITERIA
 ------------------------------------------------------
@@ -1093,7 +1081,7 @@ SESSION COMPLETION BLOCKED
 ------------------------------------------------------
 ```
 
-3. **If all phases complete**, ask about final status:
+3. **If all tasks complete**, ask about final status:
 
 ```
 COMPLETION STATUS
@@ -1178,6 +1166,30 @@ Select [1-2]:
    e. **If the API call succeeds** — add a checkmark to the confirmation display
    f. **If the API call fails** — show a warning but do NOT block archival. Display: `[!] Linear document failed: <error>. Session archived anyway.`
 
+### Spec Absorption (on close)
+
+**Before archival**, check if the session has a linked spec file:
+
+1. **Read the session file** and look for `**Spec:**` field
+2. **If `*none*` or field is missing** — skip this step entirely
+3. **If a `.claude/plans/` path is present** (e.g., `.claude/plans/proud-herding-iverson.md`):
+
+   a. **Check if the spec file exists** at `$WORKSPACE_ROOT/<spec-path>`
+   b. **If it exists:**
+      - Read the spec file content
+      - Append it to the session file as a new section at the bottom (before the final `---`):
+        ```markdown
+        ---
+
+        ## Spec (Archived)
+
+        > *Absorbed from `.claude/plans/<name>.md` on completion. This is the full spec that drove this work.*
+
+        <full spec file content>
+        ```
+      - Delete the `.claude/plans/` file
+   c. **If the spec file doesn't exist** (already deleted or moved): Add note to confirmation: `[!] Spec file not found — may have been cleaned up already`
+
 Then proceed with archival:
    - Update status to selected value in session file
    - Update the Summary section with final state
@@ -1195,21 +1207,27 @@ Display confirmation:
 ```
 SESSION COMPLETED
 ==================================================
- [x] All phases verified complete
+ [x] All tasks verified complete
  [x] Status updated to Complete
+ [x] Spec absorbed from .claude/plans/<name>.md
  [x] Moved to archive/sessions/session-YYYY-MM-DD-name.md
  [x] Session document created in Linear on <identifier>
  [x] INDEX.md regenerated
 
  Session Summary:
  - Duration: X days
- - Phases completed: N/N
+ - Tasks completed: N/N
  - Checkpoints: N
  - Decisions: N
  - Code changes: N files
 
 ==================================================
 ```
+
+**Spec line variants:**
+- Linked + absorbed: `[x] Spec absorbed from .claude/plans/<name>.md`
+- Not linked: `[ ] No spec linked — skipped absorption`
+- File missing: `[!] Spec file not found — may have been cleaned up already`
 
 **Linear line variants:**
 - Linked + success: `[x] Session document created in Linear on MAR-152`
@@ -1269,8 +1287,8 @@ SESSION ROLLUP
 | Marketing sessions | `$WORKSPACE_ROOT/in-progress/marketing-sessions/` |
 | Marketing plans | `$WORKSPACE_ROOT/in-progress/marketing-plans/` |
 | Context exports | Same subdirectory as the source session |
+| Plan-mode specs | `$WORKSPACE_ROOT/.claude/plans/` (absorbed into session on completion) |
 | Archived sessions | `$WORKSPACE_ROOT/archive/sessions/` |
-| Archived plans | `$WORKSPACE_ROOT/archive/plans/` |
 
 ---
 
@@ -1279,8 +1297,7 @@ SESSION ROLLUP
 | Type | Pattern |
 |------|---------|
 | Session log | `session-YYYY-MM-DD-HH-MM-<kebab-title>.md` |
-| Project plan | `PLAN.md` (one per project) |
-| Archived plan | `PLAN-YYYY-MM-DD.md` |
+| Feature plan | `plan-YYYY-MM-DD-<kebab-title>.md` (in `in-progress/`) |
 | Context export | `session-context-<kebab-title>.md` |
 
 ---
